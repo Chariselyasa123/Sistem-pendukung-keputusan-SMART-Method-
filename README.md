@@ -77,6 +77,24 @@ Berikut tabel **contoh**  data karyawan yang akan habis kontrak bulan Januari 20
 | 56 | Amir                   | 75  | 75  | 75  | 75  | 75  | 25  |
 | 57 | Maman suryana          | 50  | 50  | 50  | 75  | 75  | 25  |
 
+
+Pengambilan alternatif Dari database
+```php
+// Memanggil alternatif (Karyawan Habis Kontrak)
+$dataKaryawan = Karyawan::whereMonth('berakhir_kontrak', Carbon::now()->month)->whereYear('berakhir_kontrak', Carbon::now()->year)->get();
+
+// Pengambilan Nilai Alternatif
+$alternatif = array();
+foreach($dataKaryawan as $d){
+    $alternatif[$d->id]=$d->nama;
+}
+
+```
+
+Data array yang ada pada variabel ```$dataKaryawan``` ditata ulang di variabel ```$alternatif``` dan seperti yang terlihat pada Gambar **Dibawah** menyisakan hanya index yang berupa id dari table karyawans, yang memiliki item nama karyawan.
+
+![alternatif](https://lh3.googleusercontent.com/--xM7xqb14Mo/YAgcgtEh_QI/AAAAAAAAA9s/xI22tlROEQkP4hX5MDPIMfGBDjUdS1GzQCK8BGAsYHg/s0/2021-01-20.png)
+
 ### Menentukan Nilai Kriteria
 |     No    |     Kriteria                     |
 |-----------|----------------------------------|
@@ -114,4 +132,7 @@ foreach ($kriteria as $k){
     );
 }
 ```
+setelah dilakukan **dumping** data untuk pengecekan variabel data ```$kriterias```. Dan nantinya akan lebih mudah untuk dilakukan manipulasi pada array.
+
+![kriteria](https://lh3.googleusercontent.com/-RuiTf_Jxlcc/YAga8TapFVI/AAAAAAAAA9g/CPreVOSS0BIlqHFstu_yRa1e1exb2h5AACK8BGAsYHg/s0/2021-01-20.png)
 
