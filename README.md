@@ -1,78 +1,117 @@
-<p align="center"><img src="https://res.cloudinary.com/dtfbvvkyp/image/upload/v1566331377/laravel-logolockup-cmyk-red.svg" width="400"></p>
+# Implementasi Metode SMART (*Simple Multi Attribute Rating Technique*) Ke Dalam Sistem Penunjang Keputusan
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
+- [Implementasi Metode SMART (*Simple Multi Attribute Rating Technique*) Ke Dalam Sistem Penunjang Keputusan](#implementasi-metode-smart-simple-multi-attribute-rating-technique-ke-dalam-sistem-penunjang-keputusan)
+  - [Tentang Metode SMART](#tentang-metode-smart)
+  - [Implementasi Metode SMART Ke Dalam Sistem](#implementasi-metode-smart-ke-dalam-sistem)
+    - [Alternatif dan Kriteria](#alternatif-dan-kriteria)
+    - [Menentukan Nilai Kriteria](#menentukan-nilai-kriteria)
+    - [Penentuan Bobot Dari **Kriteria**](#penentuan-bobot-dari-kriteria)
 
-## About Laravel
+## Tentang Metode SMART
+SMART (*Simple Multi – Attribute Rating Technique*) adalah metode pengambilan keputusan multi kriteria yang dikembangkan oleh Edward pada tahun 1977.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Sebuah aplikasi berupa Sistem Pendukung Keputusan (*Decision Support System*) mulai dikembangkan pada tahun 1970. *Decision Support Sistem* (DSS) dengan didukung oleh sebuah sistem informasi berbasis komputer dapat membantu seseorang dalam meningkatkan kinerjanya dalam pengambilan keputusan. 
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Implementasi Metode SMART Ke Dalam Sistem
+### Alternatif dan Kriteria
+Dalam proses pembuatan Sistem Pendukung Keputusan, maka ada beberapa data yang dijadikan pertimbangan dalam proses perancangan sistem tersebut. Data tersebut akan dijadikan **kriteria** dalam penilaian untuk memilih karyawan mana saja yang akan diperpanjang kontrak kerjanya.
+Berikut tabel **contoh**  data karyawan yang akan habis kontrak bulan Januari 2021 dengan penilaian dari masing-masing kriteria :
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+| No | Nama                   | C1  | C2  | C3  | C4  | C5  | C6  |
+|----|------------------------|-----|-----|-----|-----|-----|-----|
+| 1  | Andri Maulana Jaya     | 75  | 75  | 75  | 75  | 75  | 100 |
+| 2  | Enung Suherman         | 100 | 100 | 100 | 100 | 100 | 25  |
+| 3  | Saepudin Kardiana      | 75  | 75  | 75  | 75  | 75  | 25  |
+| 4  | Mahmud                 | 75  | 75  | 75  | 100 | 75  | 25  |
+| 5  | Rudi                   | 50  | 50  | 75  | 50  | 50  | 100 |
+| 6  | Fauzi salim            | 100 | 100 | 75  | 75  | 75  | 25  |
+| 7  | Marhasan               | 100 | 100 | 100 | 100 | 100 | 25  |
+| 8  | May Sumarna            | 100 | 100 | 75  | 100 | 75  | 75  |
+| 9  | Dedi Irawan            | 75  | 75  | 100 | 75  | 75  | 75  |
+| 10 | Edi Junaedi            | 25  | 25  | 50  | 50  | 50  | 25  |
+| 11 | Dail                   | 75  | 75  | 75  | 25  | 75  | 25  |
+| 12 | Dayat                  | 50  | 50  | 50  | 75  | 50  | 100 |
+| 13 | Hamdani                | 75  | 75  | 75  | 75  | 75  | 50  |
+| 14 | Herman                 | 75  | 75  | 75  | 75  | 75  | 50  |
+| 15 | Sukamad                | 50  | 50  | 50  | 75  | 75  | 25  |
+| 16 | Yudi Yuliastiana       | 100 | 100 | 100 | 100 | 100 | 75  |
+| 17 | Heru Pranoto           | 75  | 75  | 75  | 75  | 75  | 100 |
+| 18 | Yayan Suryana          | 75  | 75  | 75  | 100 | 75  | 100 |
+| 19 | Daman                  | 75  | 75  | 75  | 75  | 100 | 75  |
+| 20 | Ade Sanudin Bin Pulung | 50  | 25  | 50  | 50  | 75  | 0   |
+| 21 | Surya Purnama          | 75  | 75  | 75  | 100 | 75  | 75  |
+| 22 | Mochamad Rivky Maulana | 25  | 0   | 25  | 25  | 50  | 100 |
+| 23 | Alif Rizki seful Iman  | 100 | 100 | 100 | 75  | 75  | 75  |
+| 24 | Reza Muhamad Fadilah   | 100 | 100 | 100 | 75  | 75  | 100 |
+| 25 | Abdul Halim            | 75  | 75  | 75  | 50  | 75  | 100 |
+| 26 | Kurtubi                | 75  | 50  | 50  | 75  | 75  | 75  |
+| 27 | Supriyadi              | 50  | 50  | 50  | 75  | 75  | 100 |
+| 28 | Rudini                 | 100 | 100 | 100 | 100 | 75  | 100 |
+| 29 | Nuryadi                | 75  | 75  | 75  | 75  | 75  | 25  |
+| 30 | Heru                   | 75  | 75  | 75  | 75  | 75  | 100 |
+| 31 | Marhadi                | 75  | 75  | 75  | 25  | 75  | 100 |
+| 32 | Zulkarnain             | 75  | 75  | 75  | 50  | 75  | 25  |
+| 33 | Humaedi                | 50  | 0   | 25  | 50  | 50  | 75  |
+| 34 | Ari Wiguna             | 75  | 75  | 75  | 100 | 75  | 25  |
+| 35 | Sajiman                | 50  | 50  | 50  | 100 | 75  | 25  |
+| 36 | Abdul Muhi             | 25  | 25  | 25  | 50  | 75  | 100 |
+| 37 | Oji. H                 | 75  | 75  | 75  | 75  | 75  | 50  |
+| 38 | Suandi                 | 100 | 100 | 100 | 100 | 100 | 75  |
+| 39 | Iyan Ja'rian           | 50  | 50  | 50  | 75  | 75  | 25  |
+| 40 | Tri Sumarjono          | 75  | 75  | 75  | 50  | 75  | 0   |
+| 41 | Iwan Bin Nursamid      | 75  | 75  | 75  | 75  | 75  | 25  |
+| 42 | Asan                   | 100 | 100 | 75  | 75  | 75  | 75  |
+| 43 | Raju Sudrajat          | 100 | 100 | 75  | 75  | 75  | 100 |
+| 44 | Tata Suparta           | 75  | 75  | 75  | 75  | 75  | 100 |
+| 45 | Abdul rojak            | 75  | 75  | 75  | 100 | 75  | 75  |
+| 46 | Anton Wijaya           | 75  | 75  | 75  | 100 | 75  | 75  |
+| 47 | Humaedi                | 75  | 75  | 75  | 75  | 75  | 100 |
+| 48 | Nahrowi                | 75  | 75  | 75  | 75  | 75  | 25  |
+| 49 | Subadri Bin Jasian     | 75  | 75  | 75  | 100 | 75  | 75  |
+| 50 | Asngari                | 50  | 50  | 50  | 50  | 75  | 25  |
+| 51 | Suparto                | 75  | 75  | 75  | 75  | 75  | 0   |
+| 52 | Maman Sudarman         | 75  | 75  | 75  | 75  | 75  | 100 |
+| 53 | Sukali                 | 75  | 75  | 75  | 75  | 75  | 0   |
+| 54 | Nurdin                 | 0   | 0   | 0   | 25  | 25  | 25  |
+| 55 | Muhyadi B.Sahenden     | 100 | 100 | 100 | 75  | 75  | 50  |
+| 56 | Amir                   | 75  | 75  | 75  | 75  | 75  | 25  |
+| 57 | Maman suryana          | 50  | 50  | 50  | 75  | 75  | 25  |
 
-## Learning Laravel
+### Menentukan Nilai Kriteria
+|     No    |     Kriteria                     |
+|-----------|----------------------------------|
+| C1        | Kehadiran                        |
+| C2        | Motivasi Kerja                   |
+| C3        | Komunikasi dan Tanggung jawab    |
+| C4        | Penguasaan pekerjaan             |
+| C5        | Penghargaan dan Sanksi           |
+| C6        | Usia                             |
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Penentuan **kriteria** ini menjadi hal terpenting yang harus dilakukan dalam perancangan menggunakan metode SMART.
+### Penentuan Bobot Dari **Kriteria**
+| No    | Kriteria                      | Bobot |
+|-------|-------------------------------|-------|
+| C1    | Kehadiran                     | 20    |
+| C2    | Motivasi kerja                | 15    |
+| C3    | Komunikasi dan Tanggung jawab | 15    |
+| C4    | Penguasaan pekerjaan          | 30    |
+| C5    | Penghargaan dan sanksi        | 10    |
+| C6    | Usia                          | 10    |
+| Total |                               | 100   |
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Dari tabel diatas setelah dilakukan penginputan ke dalam data base. dapat diambil datanya dengan menggunakan kode berikut:
+```php
+// Memanggil semua data yang ada pada tabel kriteria
+$kriteria = Kriteria::get();
 
-## Laravel Sponsors
+// Pengambilan Nilai Kriteria
+$kriterias = array();
+foreach ($kriteria as $k){
+    $kriterias[$k->id]=array(
+        $k->kriteria,
+        $k->bobot,
+        $k->tipe
+    );
+}
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[British Software Development](https://www.britishsoftware.co)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- [UserInsights](https://userinsights.com)
-- [Fragrantica](https://www.fragrantica.com)
-- [SOFTonSOFA](https://softonsofa.com/)
-- [User10](https://user10.com)
-- [Soumettre.fr](https://soumettre.fr/)
-- [CodeBrisk](https://codebrisk.com)
-- [1Forge](https://1forge.com)
-- [TECPRESSO](https://tecpresso.co.jp/)
-- [Runtime Converter](http://runtimeconverter.com/)
-- [WebL'Agence](https://weblagence.com/)
-- [Invoice Ninja](https://www.invoiceninja.com)
-- [iMi digital](https://www.imi-digital.de/)
-- [Earthlink](https://www.earthlink.ro/)
-- [Steadfast Collective](https://steadfastcollective.com/)
-- [We Are The Robots Inc.](https://watr.mx/)
-- [Understand.io](https://www.understand.io/)
-- [Abdel Elrafa](https://abdelelrafa.com)
-- [Hyper Host](https://hyper.host)
-- [Appoly](https://www.appoly.co.uk)
-- [OP.GG](https://op.gg)
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
