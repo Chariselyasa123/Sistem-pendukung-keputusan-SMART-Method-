@@ -262,7 +262,11 @@ class HomeController extends Controller
                 if(!isset($utility[$a])) $utility[$a]=array();
                 if($kriterias[$k][2]=='max'){
                     // Kalau Tipe Max (Benefit)
-                    $utility[$a][$k]=($sample[$a][$k]-$c_min[$k])/($c_max[$k]-$c_min[$k]);
+                    if(empty($sample[$a][$k])) {
+                        $utility[$a][$k]=0;
+                    }else{
+                        $utility[$a][$k]=($sample[$a][$k]-$c_min[$k])/($c_max[$k]-$c_min[$k]);
+                    }
                 }else{
                     // Kalau Tipe Min (Cost)
                     $utility[$a][$k]=($c_max[$k]-$sample[$a][$k])/($c_max[$k]-$c_min[$k]);

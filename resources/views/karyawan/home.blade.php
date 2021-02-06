@@ -135,11 +135,11 @@
     <div class="alert alert-info alert-dismissible">
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
         <h5><i class="fas fa-info-circle"></i> Perhatian</h5>
-        <p>Terdapat <strong id="karyawan"></strong> karyawan yang akan habis kontraknya Bulan <span class="bulan">{{ date('F') }}</span>!</p>
+        <p>Terdapat <strong id="karyawan"></strong> karyawan yang akan habis kontraknya Bulan <span class="bulan"></span>!</p>
     </div>
     <div class="card card-info card-outline">
         <div class="card-header">
-            <h3 class="card-title"><i class="fas fa-table"></i> List Karyawan Habis Kontrak Bulan <span class="bulan">{{ date('F') }}</span></h3>
+            <h3 class="card-title"><i class="fas fa-table"></i> List Karyawan Habis Kontrak Bulan <span class="bulan"></span></h3>
         </div>
         <div class="card-body">
             <table class="table table-striped table-bordered dt-responsive nowrap" width="100%" id="habisKntrkBlnDpn" style="font-size: 0.875em;">
@@ -477,11 +477,11 @@
     <div class="alert alert-info alert-dismissible">
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
         <h5><i class="fas fa-info-circle"></i> Perhatian</h5>
-        <p>Terdapat <strong id="karyawan"></strong> karyawan yang akan habis kontraknya Bulan <span class="bulan">{{ date('F') }}</span>!</p>
+        <p>Terdapat <strong id="karyawan"></strong> karyawan yang akan habis kontraknya Bulan <span class="bulan"></span>!</p>
     </div>
     <div class="card card-info card-outline">
         <div class="card-header">
-            <h3 class="card-title"><i class="fas fa-table"></i> List Karyawan Habis Kontrak Bulan <span class="bulan">{{ date('F') }}</span></h3>
+            <h3 class="card-title"><i class="fas fa-table"></i> List Karyawan Habis Kontrak Bulan <span class="bulan"></span></h3>
         </div>
         <div class="card-body">
             <table class="table table-striped table-bordered dt-responsive nowrap" width="100%" id="filterHbsKntrk" style="font-size: 0.875em;">
@@ -563,6 +563,12 @@ $(function(){
             }},
         ]
     })
+    var tgl = new Date;
+
+    $('#filterBulan option').map(function(n){
+        n == tgl.getMonth() && $(this).attr("selected","selected");
+        n == tgl.getMonth() && $('.bulan').text($(this).text());
+    });
     var filter = $('#filterHbsKntrk').DataTable({
         responsive:true,
         processing: true,
@@ -588,11 +594,11 @@ $(function(){
         ]
     })
 
-    const bulan = [0, 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
-
+    
+    
     $('#filterBulan').change(function(){
         filter.draw();
-        $('.bulan').text(bulan[$(this).val()])
+        $('.bulan').text($(this).children("option").filter(":selected").text());
     });
     $('#filterHbsKntrk').on('draw.dt', function() {
         $('#karyawan').text(filter.ajax.json().recordsFiltered)
@@ -707,6 +713,12 @@ $(function(){
             }},
         ]
     })
+    var tgl = new Date;
+
+    $('#filterBulan option').map(function(n){
+        n == tgl.getMonth() && $(this).attr("selected","selected");
+        n == tgl.getMonth() && $('.bulan').text($(this).text());
+    });
     var filter = $('#filterHbsKntrk').DataTable({
         responsive:true,
         processing: true,
@@ -732,11 +744,11 @@ $(function(){
         ]
     })
 
-    const bulan = [0, 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
-
+    
+    
     $('#filterBulan').change(function(){
         filter.draw();
-        $('.bulan').text(bulan[$(this).val()])
+        $('.bulan').text($(this).children("option").filter(":selected").text());
     });
     $('#filterHbsKntrk').on('draw.dt', function() {
         $('#karyawan').text(filter.ajax.json().recordsFiltered)
@@ -851,7 +863,12 @@ $(function(){
             }},
         ]
     })
+    var tgl = new Date;
 
+    $('#filterBulan option').map(function(n){
+        n == tgl.getMonth() && $(this).attr("selected","selected");
+        n == tgl.getMonth() && $('.bulan').text($(this).text());
+    });
     var filter = $('#filterHbsKntrk').DataTable({
         responsive:true,
         processing: true,
@@ -877,11 +894,11 @@ $(function(){
         ]
     })
 
-    const bulan = [0, 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
-
+    
+    
     $('#filterBulan').change(function(){
         filter.draw();
-        $('.bulan').text(bulan[$(this).val()])
+        $('.bulan').text($(this).children("option").filter(":selected").text());
     });
     $('#filterHbsKntrk').on('draw.dt', function() {
         $('#karyawan').text(filter.ajax.json().recordsFiltered)
@@ -997,7 +1014,13 @@ $(function(){
             }},
         ]
     })
-var filter = $('#filterHbsKntrk').DataTable({
+    var tgl = new Date;
+
+    $('#filterBulan option').map(function(n){
+        n == tgl.getMonth() && $(this).attr("selected","selected");
+        n == tgl.getMonth() && $('.bulan').text($(this).text());
+    });
+    var filter = $('#filterHbsKntrk').DataTable({
         responsive:true,
         processing: true,
         serverSide: true,
@@ -1022,11 +1045,11 @@ var filter = $('#filterHbsKntrk').DataTable({
         ]
     })
 
-    const bulan = [0, 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
-
+    
+    
     $('#filterBulan').change(function(){
         filter.draw();
-        $('.bulan').text(bulan[$(this).val()])
+        $('.bulan').text($(this).children("option").filter(":selected").text());
     });
     $('#filterHbsKntrk').on('draw.dt', function() {
         $('#karyawan').text(filter.ajax.json().recordsFiltered)
@@ -1142,6 +1165,12 @@ $(function(){
             }},
         ]
     })
+    var tgl = new Date;
+
+    $('#filterBulan option').map(function(n){
+        n == tgl.getMonth() && $(this).attr("selected","selected");
+        n == tgl.getMonth() && $('.bulan').text($(this).text());
+    });
     var filter = $('#filterHbsKntrk').DataTable({
         responsive:true,
         processing: true,
@@ -1167,11 +1196,11 @@ $(function(){
         ]
     })
 
-    const bulan = [0, 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
-
+    
+    
     $('#filterBulan').change(function(){
         filter.draw();
-        $('.bulan').text(bulan[$(this).val()])
+        $('.bulan').text($(this).children("option").filter(":selected").text());
     });
     $('#filterHbsKntrk').on('draw.dt', function() {
         $('#karyawan').text(filter.ajax.json().recordsFiltered)
@@ -1286,6 +1315,12 @@ $(function(){
             }},
         ]
     })
+    var tgl = new Date;
+
+    $('#filterBulan option').map(function(n){
+        n == tgl.getMonth() && $(this).attr("selected","selected");
+        n == tgl.getMonth() && $('.bulan').text($(this).text());
+    });
     var filter = $('#filterHbsKntrk').DataTable({
         responsive:true,
         processing: true,
@@ -1311,11 +1346,11 @@ $(function(){
         ]
     })
 
-    const bulan = [0, 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
-
+    
+    
     $('#filterBulan').change(function(){
         filter.draw();
-        $('.bulan').text(bulan[$(this).val()])
+        $('.bulan').text($(this).children("option").filter(":selected").text());
     });
     $('#filterHbsKntrk').on('draw.dt', function() {
         $('#karyawan').text(filter.ajax.json().recordsFiltered)
@@ -1430,6 +1465,12 @@ $(function(){
             }},
         ]
     })
+    var tgl = new Date;
+
+    $('#filterBulan option').map(function(n){
+        n == tgl.getMonth() && $(this).attr("selected","selected");
+        n == tgl.getMonth() && $('.bulan').text($(this).text());
+    });
     var filter = $('#filterHbsKntrk').DataTable({
         responsive:true,
         processing: true,
@@ -1455,11 +1496,11 @@ $(function(){
         ]
     })
 
-    const bulan = [0, 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
-
+    
+    
     $('#filterBulan').change(function(){
         filter.draw();
-        $('.bulan').text(bulan[$(this).val()])
+        $('.bulan').text($(this).children("option").filter(":selected").text());
     });
     $('#filterHbsKntrk').on('draw.dt', function() {
         $('#karyawan').text(filter.ajax.json().recordsFiltered)
@@ -1574,6 +1615,12 @@ $(function(){
             }},
         ]
     })
+    var tgl = new Date;
+
+    $('#filterBulan option').map(function(n){
+        n == tgl.getMonth() && $(this).attr("selected","selected");
+        n == tgl.getMonth() && $('.bulan').text($(this).text());
+    });
     var filter = $('#filterHbsKntrk').DataTable({
         responsive:true,
         processing: true,
@@ -1599,11 +1646,11 @@ $(function(){
         ]
     })
 
-    const bulan = [0, 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
-
+    
+    
     $('#filterBulan').change(function(){
         filter.draw();
-        $('.bulan').text(bulan[$(this).val()])
+        $('.bulan').text($(this).children("option").filter(":selected").text());
     });
     $('#filterHbsKntrk').on('draw.dt', function() {
         $('#karyawan').text(filter.ajax.json().recordsFiltered)
@@ -1718,6 +1765,12 @@ $(function(){
             }},
         ]
     })
+    var tgl = new Date;
+
+    $('#filterBulan option').map(function(n){
+        n == tgl.getMonth() && $(this).attr("selected","selected");
+        n == tgl.getMonth() && $('.bulan').text($(this).text());
+    });
     var filter = $('#filterHbsKntrk').DataTable({
         responsive:true,
         processing: true,
@@ -1743,11 +1796,11 @@ $(function(){
         ]
     })
 
-    const bulan = [0, 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
-
+    
+    
     $('#filterBulan').change(function(){
         filter.draw();
-        $('.bulan').text(bulan[$(this).val()])
+        $('.bulan').text($(this).children("option").filter(":selected").text());
     });
     $('#filterHbsKntrk').on('draw.dt', function() {
         $('#karyawan').text(filter.ajax.json().recordsFiltered)
@@ -2098,6 +2151,13 @@ var rekomendasiChart = new Chart(rekomendasiChartCanvas, {
             ]
         })
 
+        var tgl = new Date;
+
+        $('#filterBulan option').map(function(n){
+            n == tgl.getMonth() && $(this).attr("selected","selected");
+            n == tgl.getMonth() && $('.bulan').text($(this).text());
+        });
+
         var filter = $('#habisKntrkBlnDpn').DataTable({
             responsive:true,
             processing: true,
@@ -2122,13 +2182,12 @@ var rekomendasiChart = new Chart(rekomendasiChartCanvas, {
                 {data: 'berakhir_kontrak', name: 'berakhir_kontrak'}
             ]
         })
-
-        const bulan = [0, 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
-
+        
         $('#filterBulan').change(function(){
             filter.draw();
-            $('.bulan').text(bulan[$(this).val()])
+            $('.bulan').text($(this).children("option").filter(":selected").text());
         });
+
         $('#habisKntrkBlnDpn').on('draw.dt', function() {
             $('#karyawan').text(filter.ajax.json().recordsFiltered)
         });

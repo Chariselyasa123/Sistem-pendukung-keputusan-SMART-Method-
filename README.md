@@ -77,8 +77,8 @@ Berikut tabel **contoh**  data karyawan yang akan habis kontrak bulan Januari 20
 | 56 | Amir                   | 75  | 75  | 75  | 75  | 75  | 25  |
 | 57 | Maman suryana          | 50  | 50  | 50  | 75  | 75  | 25  |
 
-
 Pengambilan alternatif Dari database
+
 ```php
 // Memanggil alternatif (Karyawan Habis Kontrak)
 $dataKaryawan = Karyawan::whereMonth('berakhir_kontrak', Carbon::now()->month)->whereYear('berakhir_kontrak', Carbon::now()->year)->get();
@@ -118,6 +118,7 @@ Penentuan **kriteria** ini menjadi hal terpenting yang harus dilakukan dalam per
 | Total |                               | 100   |
 
 Dari tabel diatas setelah dilakukan penginputan ke dalam data base. dapat diambil datanya dengan menggunakan kode berikut:
+
 ```php
 // Memanggil semua data yang ada pada tabel kriteria
 $kriteria = Kriteria::get();
@@ -132,6 +133,7 @@ foreach ($kriteria as $k){
     );
 }
 ```
+
 setelah dilakukan **dumping** data untuk pengecekan variabel data ```$kriterias```. Dan nantinya akan lebih mudah untuk dilakukan manipulasi pada array.
 
 ![kriteria](https://lh3.googleusercontent.com/-RuiTf_Jxlcc/YAga8TapFVI/AAAAAAAAA9g/CPreVOSS0BIlqHFstu_yRa1e1exb2h5AACK8BGAsYHg/s0/2021-01-20.png)

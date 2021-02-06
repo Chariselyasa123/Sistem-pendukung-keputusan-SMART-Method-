@@ -13,14 +13,14 @@
     {{-- Alter Overdue! --}}
     @role('admin')
     @if(isset($statusAdmin[0]))
-        @if ($isNullAdmin == True && $nowDate >= $nowDate->endOfMonth()->addDays(-14))
+        @if ($isNullAdmin == True && $nowDate >= $endDate)
         <div class="alert alert-danger alert-dismissible" id="alertOverdue">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
             <h5><i class="fas fa-exclamation-triangle"></i> Perhatian</h5>
             <p>Terdapat{{ $statusAdmin[0] }} Karyawan yang <strong>Overdue!</strong> Segera lakukan <b>Penilaian!</b></p>
         </div>
         @endif
-    <div class="alert alert-info alert-dismissible d-none" id="alertInfo">
+    <div class="alert alert-info alert-dismissible" id="alertInfo">
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
         <h5><i class="fas fa-info-circle"></i> Perhatian</h5>
         <p>Terdapat {{ $statusAdmin[0] }} Karyawan yang <strong>Belum Dinilai!</strong> Segera lakukan <b>Penilaian!</b> sebelum <strong>Overdue!</strong></p>
@@ -28,14 +28,14 @@
     @endif
     @elserole('office')
     @if(isset($statusOffice[0]))
-        @if ($isNullOffice == True && $nowDate >= $nowDate->endOfMonth()->addDays(-14))
+        @if ($isNullOffice == True && $nowDate >= $endDate)
         <div class="alert alert-danger alert-dismissible" id="alertOverdue">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
             <h5><i class="fas fa-exclamation-triangle"></i> Perhatian</h5>
             <p>Terdapat{{ $statusOffice[0] }} Karyawan yang <strong>Overdue!</strong> Segera lakukan <b>Penilaian!</b></p>
         </div>
         @endif
-    <div class="alert alert-info alert-dismissible d-none" id="alertInfo">
+    <div class="alert alert-info alert-dismissible" id="alertInfo">
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
         <h5><i class="fas fa-info-circle"></i> Perhatian</h5>
         <p>Terdapat {{ $statusOffice[0] }} Karyawan yang <strong>Belum Dinilai!</strong> Segera lakukan <b>Penilaian!</b> sebelum <strong>Overdue!</strong></p>
@@ -43,14 +43,14 @@
     @endif
     @elserole('intake')
     @if(isset($statusIntake[0]))
-        @if ($isNullIntake == True && $nowDate >= $nowDate->endOfMonth()->addDays(-14))
+        @if ($isNullIntake == True && $nowDate >= $endDate)
         <div class="alert alert-danger alert-dismissible" id="alertOverdue">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
             <h5><i class="fas fa-exclamation-triangle"></i> Perhatian</h5>
-            <p>Terdapat{{ $statusIntake[0] }} Karyawan yang <strong>Overdue!</strong> Segera lakukan <b>Penilaian!</b></p>
+            <p>Terdapat{{ $statusIntake[0] }} Karyawan yang <strong>Overdue!</strong> Segera lakukan <b>Penilaian! {{ $tglSkrng }}</b></p>
         </div>
         @endif
-    <div class="alert alert-info alert-dismissible d-none" id="alertInfo">
+    <div class="alert alert-info alert-dismissible" id="alertInfo">
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
         <h5><i class="fas fa-info-circle"></i> Perhatian</h5>
         <p>Terdapat {{ $statusIntake[0] }} Karyawan yang <strong>Belum Dinilai!</strong> Segera lakukan <b>Penilaian!</b> sebelum <strong>Overdue!</strong></p>
@@ -58,14 +58,14 @@
     @endif
     @elserole('warehouse')
     @if(isset($statusWarehousing[0]))
-        @if ($isNullWarehousing == True && $nowDate >= $nowDate->endOfMonth()->addDays(-14))
+        @if ($isNullWarehousing == True && $nowDate >= $endDate)
         <div class="alert alert-danger alert-dismissible" id="alertOverdue">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
             <h5><i class="fas fa-exclamation-triangle"></i> Perhatian</h5>
             <p>Terdapat{{ $statusWarehousing[0] }} Karyawan yang <strong>Overdue!</strong> Segera lakukan <b>Penilaian!</b></p>
         </div>
         @endif
-    <div class="alert alert-info alert-dismissible d-none" id="alertInfo">
+    <div class="alert alert-info alert-dismissible" id="alertInfo">
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
         <h5><i class="fas fa-info-circle"></i> Perhatian</h5>
         <p>Terdapat {{ $statusWarehousing[0] }} Karyawan yang <strong>Belum Dinilai!</strong> Segera lakukan <b>Penilaian!</b> sebelum <strong>Overdue!</strong></p>
@@ -73,14 +73,14 @@
     @endif
     @elserole('produksi')
     @if(isset($statusProduksi[0]))
-        @if ($isNullProduksi == True && $nowDate >= $nowDate->endOfMonth()->addDays(-14))
+        @if ($isNullProduksi == True && $nowDate >= $endDate)
         <div class="alert alert-danger alert-dismissible" id="alertOverdue">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
             <h5><i class="fas fa-exclamation-triangle"></i> Perhatian</h5>
             <p>Terdapat{{ $statusProduksi[0] }} Karyawan yang <strong>Overdue!</strong> Segera lakukan <b>Penilaian!</b></p>
         </div>
         @endif
-    <div class="alert alert-info alert-dismissible d-none" id="alertInfo">
+    <div class="alert alert-info alert-dismissible" id="alertInfo">
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
         <h5><i class="fas fa-info-circle"></i> Perhatian</h5>
         <p>Terdapat {{ $statusProduksi[0] }} Karyawan yang <strong>Belum Dinilai!</strong> Segera lakukan <b>Penilaian!</b> sebelum <strong>Overdue!</strong></p>
@@ -88,14 +88,14 @@
     @endif
     @elserole('qclab')
     @if(isset($statusQclab[0]))
-        @if ($isNullLab == True && $nowDate >= $nowDate->endOfMonth()->addDays(-14))
+        @if ($isNullLab == True && $nowDate >= $endDate)
         <div class="alert alert-danger alert-dismissible" id="alertOverdue">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
             <h5><i class="fas fa-exclamation-triangle"></i> Perhatian</h5>
             <p>Terdapat{{ $statusLab[0] }} Karyawan yang <strong>Overdue!</strong> Segera lakukan <b>Penilaian!</b></p>
         </div>
         @endif
-    <div class="alert alert-info alert-dismissible d-none" id="alertInfo">
+    <div class="alert alert-info alert-dismissible" id="alertInfo">
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
         <h5><i class="fas fa-info-circle"></i> Perhatian</h5>
         <p>Terdapat {{ $statusQcab[0] }} Karyawan yang <strong>Belum Dinilai!</strong> Segera lakukan <b>Penilaian!</b> sebelum <strong>Overdue!</strong></p>
@@ -103,14 +103,14 @@
     @endif
     @elserole('ga')
     @if(isset($statusGa[0]))
-        @if ($isNullGa == True && $nowDate >= $nowDate->endOfMonth()->addDays(-14))
+        @if ($isNullGa == True && $nowDate >= $endDate)
         <div class="alert alert-danger alert-dismissible" id="alertOverdue">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
             <h5><i class="fas fa-exclamation-triangle"></i> Perhatian</h5>
             <p>Terdapat{{ $statusGa[0] }} Karyawan yang <strong>Overdue!</strong> Segera lakukan <b>Penilaian!</b></p>
         </div>
         @endif
-    <div class="alert alert-info alert-dismissible d-none" id="alertInfo">
+    <div class="alert alert-info alert-dismissible" id="alertInfo">
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
         <h5><i class="fas fa-info-circle"></i> Perhatian</h5>
         <p>Terdapat {{ $statusGa[0] }} Karyawan yang <strong>Belum Dinilai!</strong> Segera lakukan <b>Penilaian!</b> sebelum <strong>Overdue!</strong></p>
@@ -118,14 +118,14 @@
     @endif
     @elserole('truck')
     @if(isset($statusTruck[0]))
-        @if ($isNullTruck == True && $nowDate >= $nowDate->endOfMonth()->addDays(-14))
+        @if ($isNullTruck == True && $nowDate >= $endDate)
         <div class="alert alert-danger alert-dismissible" id="alertOverdue">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
             <h5><i class="fas fa-exclamation-triangle"></i> Perhatian</h5>
             <p>Terdapat{{ $statusTruck[0] }} Karyawan yang <strong>Overdue!</strong> Segera lakukan <b>Penilaian!</b></p>
         </div>
         @endif
-    <div class="alert alert-info alert-dismissible d-none" id="alertInfo">
+    <div class="alert alert-info alert-dismissible" id="alertInfo">
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
         <h5><i class="fas fa-info-circle"></i> Perhatian</h5>
         <p>Terdapat {{ $statusTruck[0] }} Karyawan yang <strong>Belum Dinilai!</strong> Segera lakukan <b>Penilaian!</b> sebelum <strong>Overdue!</strong></p>
@@ -133,14 +133,14 @@
     @endif
     @elserole('premix')
     @if(isset($statusPremix[0]))
-        @if ($isNullPremix == True && $nowDate >= $nowDate->endOfMonth()->addDays(-14))
+        @if ($isNullPremix == True && $nowDate >= $endDate)
         <div class="alert alert-danger alert-dismissible" id="alertOverdue">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
             <h5><i class="fas fa-exclamation-triangle"></i> Perhatian</h5>
             <p>Terdapat{{ $statusPremix[0] }} Karyawan yang <strong>Overdue!</strong> Segera lakukan <b>Penilaian!</b></p>
         </div>
         @endif
-    <div class="alert alert-info alert-dismissible d-none" id="alertInfo">
+    <div class="alert alert-info alert-dismissible" id="alertInfo">
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
         <h5><i class="fas fa-info-circle"></i> Perhatian</h5>
         <p>Terdapat {{ $statusPremix[0] }} Karyawan yang <strong>Belum Dinilai!</strong> Segera lakukan <b>Penilaian!</b> sebelum <strong>Overdue!</strong></p>
@@ -148,14 +148,14 @@
     @endif
     @elserole('maintance')
     @if(isset($statusMaintance[0]))
-        @if ($isNullMaintance == True && $nowDate >= $nowDate->endOfMonth()->addDays(-14))
+        @if ($isNullMaintance == True && $nowDate >= $endDate)
         <div class="alert alert-danger alert-dismissible" id="alertOverdue">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
             <h5><i class="fas fa-exclamation-triangle"></i> Perhatian</h5>
             <p>Terdapat{{ $statusMaintance[0] }} Karyawan yang <strong>Overdue!</strong> Segera lakukan <b>Penilaian!</b></p>
         </div>
         @endif
-    <div class="alert alert-info alert-dismissible d-none" id="alertInfo">
+    <div class="alert alert-info alert-dismissible" id="alertInfo">
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
         <h5><i class="fas fa-info-circle"></i> Perhatian</h5>
         <p>Terdapat {{ $statusMaintance[0] }} Karyawan yang <strong>Belum Dinilai!</strong> Segera lakukan <b>Penilaian!</b> sebelum <strong>Overdue!</strong></p>
@@ -163,14 +163,14 @@
     @endif
     @elserole('kebersihan')
     @if(isset($statusKebersihan[0]))
-        @if ($isNullKebersihan == True && $nowDate >= $nowDate->endOfMonth()->addDays(-14))
+        @if ($isNullKebersihan == True && $nowDate >= $endDate)
         <div class="alert alert-danger alert-dismissible" id="alertOverdue">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
             <h5><i class="fas fa-exclamation-triangle"></i> Perhatian</h5>
             <p>Terdapat{{ $statusKebersihan[0] }} Karyawan yang <strong>Overdue!</strong> Segera lakukan <b>Penilaian!</b></p>
         </div>
         @endif
-    <div class="alert alert-info alert-dismissible d-none" id="alertInfo">
+    <div class="alert alert-info alert-dismissible" id="alertInfo">
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
         <h5><i class="fas fa-info-circle"></i> Perhatian</h5>
         <p>Terdapat {{ $statusKebersihan[0] }} Karyawan yang <strong>Belum Dinilai!</strong> Segera lakukan <b>Penilaian!</b> sebelum <strong>Overdue!</strong></p>
@@ -270,10 +270,25 @@
     @endif
     @endrole
     {{-- End Alert Success! --}}
-
+    <div class="form-group col-md-4 pl-0">
+        <select name="filterBulan" id="filterBulan" class="custom-select">
+            <option value="1">Januari</option>
+            <option value="2">Februari</option>
+            <option value="3">Maret</option>
+            <option value="4">April</option>
+            <option value="5">Mei</option>
+            <option value="6">Juni</option>
+            <option value="7">Juli</option>
+            <option value="8">Agustus</option>
+            <option value="9">September</option>
+            <option value="10">Oktober</option>
+            <option value="11">November</option>
+            <option value="12">Desember</option>
+        </select>
+    </div>
     <div class="card card-primary card-outline">
         <div class="card-header">
-            <h3 class="card-title"><i class="fas fa-user"></i> List karyawan yang Akan Habis Kontrak Bulan {{ date('F') }}</h3>
+            <h3 class="card-title"><i class="fas fa-user"></i> List karyawan yang Akan Habis Kontrak Bulan <span class="bulan"></span></h3>
         </div>
         <div class="card-body">
             <table class="table table-striped table-bordered dt-responsive nowrap" width="100%" id="infoKarya" style="font-size: 0.875em;">
@@ -314,13 +329,26 @@
 @role('admin')
 @push('info-karyawan')
 <script type="text/javascript">
+var tgl = new Date;
+
+$('#filterBulan option').map(function(n){
+    n == tgl.getMonth() && $(this).attr("selected","selected");
+    n == tgl.getMonth() && $('.bulan').text($(this).text());
+    n > tgl.getMonth() && $(this).addClass("d-none");
+});
 
     $(function () {
         var table = $('#infoKarya').DataTable({
             responsive:true,
             processing: true,
             serverSide: true,
-            ajax: "{{ route('penilaian.pen') }}",
+            ajax: {
+                url:"{{ route('penilaian.pen') }}",
+                data: d => {
+                    d.bulan = $('#filterBulan').val(),
+                    d.dep = 'admin'
+                }
+            },
             columns: [
                 {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
                 {data: 'no_induk_karyawan', name: 'no_induk_karyawan'},
@@ -369,6 +397,12 @@
                 },
             ]
         });
+        
+        
+        $('#filterBulan').change(function(){
+            table.draw();
+            $('.bulan').text($(this).children("option").filter(":selected").text());
+        });
       
     });
 
@@ -380,6 +414,14 @@
 @elserole('office')
 @push('info-karyawan')
 <script type="text/javascript">
+var tgl = new Date;
+
+$('#filterBulan option').map(function(n){
+    n == tgl.getMonth() && $(this).attr("selected","selected");
+    n == tgl.getMonth() && $('.bulan').text($(this).text());
+    n > tgl.getMonth() && $(this).addClass("d-none");
+});
+
     $(function () {
         var table = $('#infoKarya').DataTable({
             responsive:true,
@@ -438,7 +480,11 @@
                 },
             ]
         });
-      
+        
+        $('#filterBulan').change(function(){
+            table.draw();
+            $('.bulan').text($(this).children("option").filter(":selected").text());
+        });
     });
 
     setTimeout(function() {
@@ -449,12 +495,26 @@
 @elserole('intake')
 @push('info-karyawan')
 <script type="text/javascript">
+var tgl = new Date;
+
+$('#filterBulan option').map(function(n){
+    n == tgl.getMonth() && $(this).attr("selected","selected");
+    n == tgl.getMonth() && $('.bulan').text($(this).text());
+    n > tgl.getMonth() && $(this).addClass("d-none");
+});
+
     $(function () {
         var table = $('#infoKarya').DataTable({
             responsive:true,
             processing: true,
             serverSide: true,
-            ajax: "{{ route('penilaian.in') }}",
+            ajax: {
+                url:"{{ route('penilaian.pen') }}",
+                data: d => {
+                    d.bulan = $('#filterBulan option').filter(":selected").val(),
+                    d.dep = 'intake'
+                }
+            },
             columns: [
                 {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
                 {data: 'no_induk_karyawan', name: 'no_induk_karyawan'},
@@ -506,6 +566,11 @@
                     searchable: true
                 },
             ]
+        });
+        
+        $('#filterBulan').change(function(){
+            table.draw();
+            $('.bulan').text($(this).children("option").filter(":selected").text());
         });
       
     });
@@ -518,12 +583,25 @@
 @elserole('warehouse')
 @push('info-karyawan')
 <script type="text/javascript">
+var tgl = new Date;
+
+$('#filterBulan option').map(function(n){
+    n == tgl.getMonth() && $(this).attr("selected","selected");
+    n == tgl.getMonth() && $('.bulan').text($(this).text());
+    n > tgl.getMonth() && $(this).addClass("d-none");
+});
     $(function () {
         var table = $('#infoKarya').DataTable({
             responsive:true,
             processing: true,
             serverSide: true,
-            ajax: "{{ route('penilaian.war') }}",
+            ajax: {
+                url:"{{ route('penilaian.pen') }}",
+                data: d => {
+                    d.bulan = $('#filterBulan').val(),
+                    d.dep = 'warehouse'
+                }
+            },
             columns: [
                 {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
                 {data: 'no_induk_karyawan', name: 'no_induk_karyawan'},
@@ -576,7 +654,12 @@
                 },
             ]
         });
-      
+        
+        
+        $('#filterBulan').change(function(){
+            table.draw();
+            $('.bulan').text($(this).children("option").filter(":selected").text());
+        });
     });
 
     setTimeout(function() {
@@ -587,12 +670,25 @@
 @elserole('produksi')
 @push('info-karyawan')
 <script type="text/javascript">
+var tgl = new Date;
+
+$('#filterBulan option').map(function(n){
+    n == tgl.getMonth() && $(this).attr("selected","selected");
+    n == tgl.getMonth() && $('.bulan').text($(this).text());
+    n > tgl.getMonth() && $(this).addClass("d-none");
+});
     $(function () {
         var table = $('#infoKarya').DataTable({
             responsive:true,
             processing: true,
             serverSide: true,
-            ajax: "{{ route('penilaian.prod') }}",
+            ajax: {
+                url:"{{ route('penilaian.pen') }}",
+                data: d => {
+                    d.bulan = $('#filterBulan').val(),
+                    d.dep = 'produksi'
+                }
+            },
             columns: [
                 {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
                 {data: 'no_induk_karyawan', name: 'no_induk_karyawan'},
@@ -645,7 +741,12 @@
                 },
             ]
         });
-      
+        
+        
+        $('#filterBulan').change(function(){
+            table.draw();
+            $('.bulan').text($(this).children("option").filter(":selected").text());
+        });
     });
 
     setTimeout(function() {
@@ -656,12 +757,25 @@
 @elserole('qclab')
 @push('info-karyawan')
 <script type="text/javascript">
+var tgl = new Date;
+
+$('#filterBulan option').map(function(n){
+    n == tgl.getMonth() && $(this).attr("selected","selected");
+    n == tgl.getMonth() && $('.bulan').text($(this).text());
+    n > tgl.getMonth() && $(this).addClass("d-none");
+});
     $(function () {
         var table = $('#infoKarya').DataTable({
             responsive:true,
             processing: true,
             serverSide: true,
-            ajax: "{{ route('penilaian.qc') }}",
+            ajax: {
+                url:"{{ route('penilaian.pen') }}",
+                data: d => {
+                    d.bulan = $('#filterBulan').val(),
+                    d.dep = 'lab'
+                }
+            },
             columns: [
                 {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
                 {data: 'no_induk_karyawan', name: 'no_induk_karyawan'},
@@ -714,7 +828,12 @@
                 },
             ]
         });
-      
+        
+        
+        $('#filterBulan').change(function(){
+            table.draw();
+            $('.bulan').text($(this).children("option").filter(":selected").text());
+        });
     });
 
     setTimeout(function() {
@@ -725,12 +844,25 @@
 @elserole('ga')
 @push('info-karyawan')
 <script type="text/javascript">
+var tgl = new Date;
+
+$('#filterBulan option').map(function(n){
+    n == tgl.getMonth() && $(this).attr("selected","selected");
+    n == tgl.getMonth() && $('.bulan').text($(this).text());
+    n > tgl.getMonth() && $(this).addClass("d-none");
+});
     $(function () {
         var table = $('#infoKarya').DataTable({
             responsive:true,
             processing: true,
             serverSide: true,
-            ajax: "{{ route('penilaian.ga') }}",
+            ajax: {
+                url:"{{ route('penilaian.pen') }}",
+                data: d => {
+                    d.bulan = $('#filterBulan').val(),
+                    d.dep = 'ga'
+                }
+            },
             columns: [
                 {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
                 {data: 'no_induk_karyawan', name: 'no_induk_karyawan'},
@@ -783,7 +915,12 @@
                 },
             ]
         });
-      
+        
+        
+        $('#filterBulan').change(function(){
+            table.draw();
+            $('.bulan').text($(this).children("option").filter(":selected").text());
+        });
     });
 
     setTimeout(function() {
@@ -794,12 +931,25 @@
 @elserole('truck')
 @push('info-karyawan')
 <script type="text/javascript">
+var tgl = new Date;
+
+$('#filterBulan option').map(function(n){
+    n == tgl.getMonth() && $(this).attr("selected","selected");
+    n == tgl.getMonth() && $('.bulan').text($(this).text());
+    n > tgl.getMonth() && $(this).addClass("d-none");
+});
     $(function () {
         var table = $('#infoKarya').DataTable({
             responsive:true,
             processing: true,
             serverSide: true,
-            ajax: "{{ route('penilaian.truck') }}",
+            ajax: {
+                url:"{{ route('penilaian.pen') }}",
+                data: d => {
+                    d.bulan = $('#filterBulan').val(),
+                    d.dep = 'truck'
+                }
+            },
             columns: [
                 {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
                 {data: 'no_induk_karyawan', name: 'no_induk_karyawan'},
@@ -852,7 +1002,12 @@
                 },
             ]
         });
-      
+        
+        
+        $('#filterBulan').change(function(){
+            table.draw();
+            $('.bulan').text($(this).children("option").filter(":selected").text());
+        });
     });
 
     setTimeout(function() {
@@ -863,12 +1018,25 @@
 @elserole('premix')
 @push('info-karyawan')
 <script type="text/javascript">
+var tgl = new Date;
+
+$('#filterBulan option').map(function(n){
+    n == tgl.getMonth() && $(this).attr("selected","selected");
+    n == tgl.getMonth() && $('.bulan').text($(this).text());
+    n > tgl.getMonth() && $(this).addClass("d-none");
+});
     $(function () {
         var table = $('#infoKarya').DataTable({
             responsive:true,
             processing: true,
             serverSide: true,
-            ajax: "{{ route('penilaian.pre') }}",
+            ajax: {
+                url:"{{ route('penilaian.pen') }}",
+                data: d => {
+                    d.bulan = $('#filterBulan').val(),
+                    d.dep = 'premix'
+                }
+            },
             columns: [
                 {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
                 {data: 'no_induk_karyawan', name: 'no_induk_karyawan'},
@@ -921,7 +1089,12 @@
                 },
             ]
         });
-      
+        
+        
+        $('#filterBulan').change(function(){
+            table.draw();
+            $('.bulan').text($(this).children("option").filter(":selected").text());
+        });
     });
 
     setTimeout(function() {
@@ -932,12 +1105,25 @@
 @elserole('maintance')
 @push('info-karyawan')
 <script type="text/javascript">
+var tgl = new Date;
+
+$('#filterBulan option').map(function(n){
+    n == tgl.getMonth() && $(this).attr("selected","selected");
+    n == tgl.getMonth() && $('.bulan').text($(this).text());
+    n > tgl.getMonth() && $(this).addClass("d-none");
+});
     $(function () {
         var table = $('#infoKarya').DataTable({
             responsive:true,
             processing: true,
             serverSide: true,
-            ajax: "{{ route('penilaian.main') }}",
+            ajax: {
+                url:"{{ route('penilaian.pen') }}",
+                data: d => {
+                    d.bulan = $('#filterBulan').val(),
+                    d.dep = 'maintenance'
+                }
+            },
             columns: [
                 {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
                 {data: 'no_induk_karyawan', name: 'no_induk_karyawan'},
@@ -990,7 +1176,12 @@
                 },
             ]
         });
-      
+        
+        
+        $('#filterBulan').change(function(){
+            table.draw();
+            $('.bulan').text($(this).children("option").filter(":selected").text());
+        });
     });
 
     setTimeout(function() {
@@ -1001,12 +1192,25 @@
 @elserole('kebersihan')
 @push('info-karyawan')
 <script type="text/javascript">
+var tgl = new Date;
+
+$('#filterBulan option').map(function(n){
+    n == tgl.getMonth() && $(this).attr("selected","selected");
+    n == tgl.getMonth() && $('.bulan').text($(this).text());
+    n > tgl.getMonth() && $(this).addClass("d-none");
+});
     $(function () {
         var table = $('#infoKarya').DataTable({
             responsive:true,
             processing: true,
             serverSide: true,
-            ajax: "{{ route('penilaian.keb') }}",
+            ajax: {
+                url:"{{ route('penilaian.pen') }}",
+                data: d => {
+                    d.bulan = $('#filterBulan').val(),
+                    d.dep = 'kebersihan'
+                }
+            },
             columns: [
                 {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
                 {data: 'no_induk_karyawan', name: 'no_induk_karyawan'},
@@ -1059,7 +1263,12 @@
                 },
             ]
         });
-      
+        
+        
+        $('#filterBulan').change(function(){
+            table.draw();
+            $('.bulan').text($(this).children("option").filter(":selected").text());
+        });
     });
 
     setTimeout(function() {
