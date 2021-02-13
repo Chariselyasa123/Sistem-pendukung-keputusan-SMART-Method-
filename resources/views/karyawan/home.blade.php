@@ -86,9 +86,25 @@
             <!-- /.card -->
         </div>
     </div>
+    <div class="form-group col-md-4 pl-0">
+        <select name="filterRekomend" id="filterRekomend" class="custom-select">
+            <option value="1">Januari</option>
+            <option value="2">Februari</option>
+            <option value="3">Maret</option>
+            <option value="4">April</option>
+            <option value="5">Mei</option>
+            <option value="6">Juni</option>
+            <option value="7">Juli</option>
+            <option value="8">Agustus</option>
+            <option value="9">September</option>
+            <option value="10">Oktober</option>
+            <option value="11">November</option>
+            <option value="12">Desember</option>
+        </select>
+    </div>
     <div class="card card-warning card-outline">
         <div class="card-header">
-            <h3 class="card-title"><i class="fas fa-table"></i> Rekomendasi Karyawan Habis Kontrak Bulan <span id="bulan">{{ date('F') }}</span></h3>
+            <h3 class="card-title"><i class="fas fa-table"></i> Rekomendasi Karyawan Habis Kontrak Bulan <span id="rekomend"></span></h3>
         </div>
         <div class="card-body">
             <table class="table table-striped table-bordered dt-responsive nowrap" width="100%" id="habisKntrkBlnIni" style="font-size: 0.875em;">
@@ -436,9 +452,25 @@
                 <span class="info-box-number"><strong>{{ $kebersihan }}</strong></span>
                 @endrole karyawan yang akan habis kontraknya pada bulan ini!</p>
         </div>
+        <div class="form-group col-md-4 pl-0">
+            <select name="filterRekomend" id="filterRekomend" class="custom-select">
+                <option value="1">Januari</option>
+                <option value="2">Februari</option>
+                <option value="3">Maret</option>
+                <option value="4">April</option>
+                <option value="5">Mei</option>
+                <option value="6">Juni</option>
+                <option value="7">Juli</option>
+                <option value="8">Agustus</option>
+                <option value="9">September</option>
+                <option value="10">Oktober</option>
+                <option value="11">November</option>
+                <option value="12">Desember</option>
+            </select>
+        </div>
         <div class="card card-primary card-tabs card-outline">
             <div class="card-header">
-                <h3 class="card-title"><i class="fas fa-table"></i> List Karyawan Habis Kontrak Bulan  <span id="bulan2">{{ date('F') }}</span></h3>
+                <h3 class="card-title"><i class="fas fa-table"></i> Rekomendasi Karyawan Habis Kontrak Bulan <span id="rekomend"></span></h3>
             </div>
             <div class="card-body">
                 <table class="table table-striped table-bordered dt-responsive nowrap" width="100%" id="habisKntrk" style="font-size: 0.875em;">
@@ -515,7 +547,10 @@ $(function(){
         responsive:true,
         processing: true,
         serverSide: true,
-        ajax: "{{ route('dashboard.off') }}",
+        ajax: {
+            url:"{{ route('dashboard.ini') }}",
+            data: d => {d.dep = 'office'}
+        },
         columns: [
             {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
             {data: 'no_induk_karyawan', name: 'no_induk_karyawan'},
@@ -536,11 +571,20 @@ $(function(){
 @push('info-karyawan')
 <script>
 $(function(){
-    var table = $('#habisKntrk').DataTable({
+    var tgl = new Date;
+    $('#filterRekomend option').map(function(n){
+        n == tgl.getMonth() && $(this).attr("selected","selected");
+        n == tgl.getMonth() && $('#rekomend').text($(this).text());
+        n > tgl.getMonth() && $(this).addClass("d-none");
+    });
+    var tabel = $('#habisKntrk').DataTable({
         responsive:true,
         processing: true,
         serverSide: true,
-        ajax: "{{ route('dashboard.int') }}",
+        ajax: {
+            url:"{{ route('dashboard.ini') }}",
+            data: d => {d.dep = 'intake', d.bulan = $('#filterRekomend').val()}
+        },
         columns: [
             {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
             {data: 'no_induk_karyawan', name: 'no_induk_karyawan'},
@@ -563,7 +607,11 @@ $(function(){
             }},
         ]
     })
-    var tgl = new Date;
+    
+    $('#filterRekomend').change(function(){
+        tabel.draw();
+        $('#rekomend').text($(this).children("option").filter(":selected").text());
+    });
 
     $('#filterBulan option').map(function(n){
         n == tgl.getMonth() && $(this).attr("selected","selected");
@@ -686,11 +734,20 @@ var rekomendasiChart = new Chart(rekomendasiChartCanvas, {
 @push('info-karyawan')
 <script>
 $(function(){
-    var table = $('#habisKntrk').DataTable({
+    var tgl = new Date;
+    $('#filterRekomend option').map(function(n){
+        n == tgl.getMonth() && $(this).attr("selected","selected");
+        n == tgl.getMonth() && $('#rekomend').text($(this).text());
+        n > tgl.getMonth() && $(this).addClass("d-none");
+    });
+    var tabel = $('#habisKntrk').DataTable({
         responsive:true,
         processing: true,
         serverSide: true,
-        ajax: "{{ route('dashboard.war') }}",
+        ajax: {
+            url:"{{ route('dashboard.ini') }}",
+            data: d => {d.dep = 'warehousing', d.bulan = $('#filterRekomend').val()}
+        },
         columns: [
             {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
             {data: 'no_induk_karyawan', name: 'no_induk_karyawan'},
@@ -713,7 +770,12 @@ $(function(){
             }},
         ]
     })
-    var tgl = new Date;
+    
+    $('#filterRekomend').change(function(){
+        tabel.draw();
+        $('#rekomend').text($(this).children("option").filter(":selected").text());
+    });
+    
 
     $('#filterBulan option').map(function(n){
         n == tgl.getMonth() && $(this).attr("selected","selected");
@@ -836,11 +898,20 @@ var rekomendasiChart = new Chart(rekomendasiChartCanvas, {
 @push('info-karyawan')
 <script>
 $(function(){
-    var table = $('#habisKntrk').DataTable({
+    var tgl = new Date;
+    $('#filterRekomend option').map(function(n){
+        n == tgl.getMonth() && $(this).attr("selected","selected");
+        n == tgl.getMonth() && $('#rekomend').text($(this).text());
+        n > tgl.getMonth() && $(this).addClass("d-none");
+    });
+    var tabel = $('#habisKntrk').DataTable({
         responsive:true,
         processing: true,
         serverSide: true,
-        ajax: "{{ route('dashboard.prod') }}",
+        ajax: {
+            url:"{{ route('dashboard.ini') }}",
+            data: d => {d.dep = 'produksi', d.bulan = $('#filterRekomend').val()}
+        },
         columns: [
             {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
             {data: 'no_induk_karyawan', name: 'no_induk_karyawan'},
@@ -863,7 +934,12 @@ $(function(){
             }},
         ]
     })
-    var tgl = new Date;
+    
+
+    $('#filterRekomend').change(function(){
+        tabel.draw();
+        $('#rekomend').text($(this).children("option").filter(":selected").text());
+    });
 
     $('#filterBulan option').map(function(n){
         n == tgl.getMonth() && $(this).attr("selected","selected");
@@ -987,11 +1063,20 @@ var rekomendasiChart = new Chart(rekomendasiChartCanvas, {
 @push('info-karyawan')
 <script>
 $(function(){
-    var table = $('#habisKntrk').DataTable({
+    var tgl = new Date;
+    $('#filterRekomend option').map(function(n){
+        n == tgl.getMonth() && $(this).attr("selected","selected");
+        n == tgl.getMonth() && $('#rekomend').text($(this).text());
+        n > tgl.getMonth() && $(this).addClass("d-none");
+    });
+    var tabel = $('#habisKntrk').DataTable({
         responsive:true,
         processing: true,
         serverSide: true,
-        ajax: "{{ route('dashboard.qc') }}",
+        ajax: {
+            url:"{{ route('dashboard.ini') }}",
+            data: d => {d.dep = 'lab', d.bulan = $('#filterRekomend').val()}
+        },
         columns: [
             {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
             {data: 'no_induk_karyawan', name: 'no_induk_karyawan'},
@@ -1014,7 +1099,11 @@ $(function(){
             }},
         ]
     })
-    var tgl = new Date;
+    
+    $('#filterRekomend').change(function(){
+        tabel.draw();
+        $('#rekomend').text($(this).children("option").filter(":selected").text());
+    });
 
     $('#filterBulan option').map(function(n){
         n == tgl.getMonth() && $(this).attr("selected","selected");
@@ -1138,11 +1227,20 @@ var rekomendasiChart = new Chart(rekomendasiChartCanvas, {
 @push('info-karyawan')
 <script>
 $(function(){
-    var table = $('#habisKntrk').DataTable({
+    var tgl = new Date;
+    $('#filterRekomend option').map(function(n){
+        n == tgl.getMonth() && $(this).attr("selected","selected");
+        n == tgl.getMonth() && $('#rekomend').text($(this).text());
+        n > tgl.getMonth() && $(this).addClass("d-none");
+    });
+    var tabel = $('#habisKntrk').DataTable({
         responsive:true,
         processing: true,
         serverSide: true,
-        ajax: "{{ route('dashboard.ga') }}",
+        ajax: {
+            url:"{{ route('dashboard.ini') }}",
+            data: d => {d.dep = 'ga', d.bulan = $('#filterRekomend').val()}
+        },
         columns: [
             {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
             {data: 'no_induk_karyawan', name: 'no_induk_karyawan'},
@@ -1165,7 +1263,11 @@ $(function(){
             }},
         ]
     })
-    var tgl = new Date;
+    
+    $('#filterRekomend').change(function(){
+        tabel.draw();
+        $('#rekomend').text($(this).children("option").filter(":selected").text());
+    });
 
     $('#filterBulan option').map(function(n){
         n == tgl.getMonth() && $(this).attr("selected","selected");
@@ -1288,11 +1390,20 @@ var rekomendasiChart = new Chart(rekomendasiChartCanvas, {
 @push('info-karyawan')
 <script>
 $(function(){
-    var table = $('#habisKntrk').DataTable({
+    var tgl = new Date;
+    $('#filterRekomend option').map(function(n){
+        n == tgl.getMonth() && $(this).attr("selected","selected");
+        n == tgl.getMonth() && $('#rekomend').text($(this).text());
+        n > tgl.getMonth() && $(this).addClass("d-none");
+    });
+    var tabel = $('#habisKntrk').DataTable({
         responsive:true,
         processing: true,
         serverSide: true,
-        ajax: "{{ route('dashboard.truck') }}",
+        ajax: {
+            url:"{{ route('dashboard.ini') }}",
+            data: d => {d.dep = 'truck', d.bulan = $('#filterRekomend').val()}
+        },
         columns: [
             {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
             {data: 'no_induk_karyawan', name: 'no_induk_karyawan'},
@@ -1315,7 +1426,11 @@ $(function(){
             }},
         ]
     })
-    var tgl = new Date;
+    
+    $('#filterRekomend').change(function(){
+        tabel.draw();
+        $('#rekomend').text($(this).children("option").filter(":selected").text());
+    });
 
     $('#filterBulan option').map(function(n){
         n == tgl.getMonth() && $(this).attr("selected","selected");
@@ -1438,11 +1553,20 @@ var rekomendasiChart = new Chart(rekomendasiChartCanvas, {
 @push('info-karyawan')
 <script>
 $(function(){
-    var table = $('#habisKntrk').DataTable({
+    var tgl = new Date;
+    $('#filterRekomend option').map(function(n){
+        n == tgl.getMonth() && $(this).attr("selected","selected");
+        n == tgl.getMonth() && $('#rekomend').text($(this).text());
+        n > tgl.getMonth() && $(this).addClass("d-none");
+    });
+    var tabel = $('#habisKntrk').DataTable({
         responsive:true,
         processing: true,
         serverSide: true,
-        ajax: "{{ route('dashboard.pre') }}",
+        ajax: {
+            url:"{{ route('dashboard.ini') }}",
+            data: d => {d.dep = 'premix', d.bulan = $('#filterRekomend').val()}
+        },
         columns: [
             {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
             {data: 'no_induk_karyawan', name: 'no_induk_karyawan'},
@@ -1465,7 +1589,11 @@ $(function(){
             }},
         ]
     })
-    var tgl = new Date;
+    
+    $('#filterRekomend').change(function(){
+        tabel.draw();
+        $('#rekomend').text($(this).children("option").filter(":selected").text());
+    });
 
     $('#filterBulan option').map(function(n){
         n == tgl.getMonth() && $(this).attr("selected","selected");
@@ -1588,11 +1716,20 @@ var rekomendasiChart = new Chart(rekomendasiChartCanvas, {
 @push('info-karyawan')
 <script>
 $(function(){
-    var table = $('#habisKntrk').DataTable({
+    var tgl = new Date;
+    $('#filterRekomend option').map(function(n){
+        n == tgl.getMonth() && $(this).attr("selected","selected");
+        n == tgl.getMonth() && $('#rekomend').text($(this).text());
+        n > tgl.getMonth() && $(this).addClass("d-none");
+    });
+    var tabel = $('#habisKntrk').DataTable({
         responsive:true,
         processing: true,
         serverSide: true,
-        ajax: "{{ route('dashboard.main') }}",
+        ajax: {
+            url:"{{ route('dashboard.ini') }}",
+            data: d => {d.dep = 'maintenance', d.bulan = $('#filterRekomend').val()}
+        },
         columns: [
             {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
             {data: 'no_induk_karyawan', name: 'no_induk_karyawan'},
@@ -1615,7 +1752,11 @@ $(function(){
             }},
         ]
     })
-    var tgl = new Date;
+    
+    $('#filterRekomend').change(function(){
+        tabel.draw();
+        $('#rekomend').text($(this).children("option").filter(":selected").text());
+    });
 
     $('#filterBulan option').map(function(n){
         n == tgl.getMonth() && $(this).attr("selected","selected");
@@ -1738,11 +1879,21 @@ var rekomendasiChart = new Chart(rekomendasiChartCanvas, {
 @push('info-karyawan')
 <script>
 $(function(){
-    var table = $('#habisKntrk').DataTable({
+    var tgl = new Date;
+    $('#filterRekomend option').map(function(n){
+        n == tgl.getMonth() && $(this).attr("selected","selected");
+        n == tgl.getMonth() && $('#rekomend').text($(this).text());
+        n > tgl.getMonth() && $(this).addClass("d-none");
+    });
+
+    var tabel = $('#habisKntrk').DataTable({
         responsive:true,
         processing: true,
         serverSide: true,
-        ajax: "{{ route('dashboard.keb') }}",
+        ajax: {
+            url:"{{ route('dashboard.ini') }}",
+            data: d => {d.dep = 'kebersihan', d.bulan = $('#filterRekomend').val()}
+        },
         columns: [
             {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
             {data: 'no_induk_karyawan', name: 'no_induk_karyawan'},
@@ -1765,7 +1916,10 @@ $(function(){
             }},
         ]
     })
-    var tgl = new Date;
+    $('#filterRekomend').change(function(){
+        tabel.draw();
+        $('#rekomend').text($(this).children("option").filter(":selected").text());
+    });
 
     $('#filterBulan option').map(function(n){
         n == tgl.getMonth() && $(this).attr("selected","selected");
@@ -1886,8 +2040,16 @@ var rekomendasiChart = new Chart(rekomendasiChartCanvas, {
 @endpush
 
 @elserole('admin')
-
+@push('style')
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.6.5/css/buttons.dataTables.min.css">
+@endpush
 @push('info-karyawan')
+<script src="https://cdn.datatables.net/buttons/1.6.5/js/dataTables.buttons.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.6.5/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.6.5/js/buttons.print.min.js"></script>
 <script>
     $(function(){
         var karyawanChartCanvas = $('#karyawanChart').get(0).getContext('2d')
@@ -2122,12 +2284,26 @@ var rekomendasiChart = new Chart(rekomendasiChartCanvas, {
         })
         
         var umur = $('#umur').val()
+        var tgl = new Date;
 
-        $('#habisKntrkBlnIni').DataTable({
+        $('#filterRekomend option').map(function(n){
+            n == tgl.getMonth() && $(this).attr("selected","selected");
+            n == tgl.getMonth() && $('#rekomend').text($(this).text());
+            n > tgl.getMonth() && $(this).addClass("d-none");
+        });
+
+        var tabel = $('#habisKntrkBlnIni').DataTable({
             responsive:true,
             processing: true,
             serverSide: true,
             ajax: "{{ route('dashboard.ini') }}",
+            ajax: {
+                url:"{{ route('dashboard.ini') }}",
+                data: d => {
+                    d.dep = 'admin',
+                    d.bulan = $('#filterRekomend').val()
+                }
+            },
             columns: [
                 {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
                 {data: 'no_induk_karyawan', name: 'no_induk_karyawan'},
@@ -2148,10 +2324,90 @@ var rekomendasiChart = new Chart(rekomendasiChartCanvas, {
                         return `<span class="badge badge-pill badge-danger">${y}%</span>`
                     }
                 }},
+            ],
+            // dom: 'Blfrtip',
+            // dom: '<"html5buttons">lBfrtip',
+            dom: "<'row'<'col-sm-2'l><'col-sm-7 text-center'B><'col-sm-3'f>>"+"<'row'<'col-sm-12'tr>>"+"<'row'<'col-sm-5'i><'col-sm-7'p>>",
+            buttons: [
+                {
+                    extend: 'collection', 
+                    text: 'Print', 
+                    buttons: [
+                        {
+                            extend: 'print', 
+                            text: 'Perpanjang',
+                            title: 'Karyawan Yang Direkomendasi Perpanjang Kontrak',
+                            exportOptions: {rows: function(idx, data, node) {if (data.nilai * 100 >= 60) return true}}
+                        },
+                        {
+                            extend: 'print', 
+                            text: 'Tidak Perpanjang',
+                            title: 'Karyawan Yang tidak direkomendasikan Perpanjang Kontrak',
+                            exportOptions: {rows: function(idx, data, node) {if (data.nilai * 100 <= 60) return true}}
+                        }
+                    ]
+                },
+                {
+                    extend: 'collection', 
+                    text: 'CSV', 
+                    buttons: [
+                        {
+                            extend: 'csv', 
+                            text: 'Perpanjang',
+                            title: 'Karyawan Yang Direkomendasi Perpanjang Kontrak',
+                            exportOptions: {rows: function(idx, data, node) {if (data.nilai * 100 >= 60) return true}}
+                        },
+                        {
+                            extend: 'csv', 
+                            text: 'Tidak Perpanjang',
+                            title: 'Karyawan Yang tidak direkomendasikan Perpanjang Kontrak',
+                            exportOptions: {rows: function(idx, data, node) {if (data.nilai * 100 <= 60) return true}}
+                        }
+                    ]
+                },
+                {
+                    extend: 'collection', 
+                    text: 'Excel', 
+                    buttons: [
+                        {
+                            extend: 'excel', 
+                            text: 'Perpanjang',
+                            title: 'Karyawan Yang Direkomendasi Perpanjang Kontrak',
+                            exportOptions: {rows: function(idx, data, node) {if (data.nilai * 100 >= 60) return true}}
+                        },
+                        {
+                            extend: 'excel', 
+                            text: 'Tidak Perpanjang',
+                            title: 'Karyawan Yang tidak direkomendasikan Perpanjang Kontrak',
+                            exportOptions: {rows: function(idx, data, node) {if (data.nilai * 100 <= 60) return true}}
+                        }
+                    ]
+                },
+                {
+                    extend: 'collection', 
+                    text: 'PDF', 
+                    buttons: [
+                        {
+                            extend: 'pdf', 
+                            text: 'Perpanjang',
+                            title: 'Karyawan Yang Direkomendasi Perpanjang Kontrak',
+                            exportOptions: {rows: function(idx, data, node) {if (data.nilai * 100 >= 60) return true}}
+                        },
+                        {
+                            extend: 'pdf', 
+                            text: 'Tidak Perpanjang',
+                            title: 'Karyawan Yang tidak direkomendasikan Perpanjang Kontrak',
+                            exportOptions: {rows: function(idx, data, node) {if (data.nilai * 100 <= 60) return true}}
+                        }
+                    ]
+                }
             ]
         })
 
-        var tgl = new Date;
+        $('#filterRekomend').change(function(){
+            tabel.draw();
+            $('#rekomend').text($(this).children("option").filter(":selected").text());
+        });
 
         $('#filterBulan option').map(function(n){
             n == tgl.getMonth() && $(this).attr("selected","selected");

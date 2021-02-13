@@ -387,9 +387,9 @@ $('#filterBulan option').map(function(n){
                         if(oData.status_admin == 0) {
                             return "<a href='/penilaian/"+oData.id+"/input' class='btn btn-info'>Nilai</a>";
                         }else if(oData.status_kepbag == 1){
-                            return '<a href="/penilaian/'+oData.id+'/nilai" class="btn btn-warning">History</a>';
+                            return '<a href="/penilaian/'+oData.id+'/nilai/'+$('#filterBulan').val()+'" class="btn btn-warning" >History</a>';
                         }else if(oData.status_kepbag == 0){
-                            return '<a href="/penilaian/'+oData.id+'/nilai" class="btn btn-warning" disabled>History</a>';
+                            return '<a href="javascript:void(0)" class="btn btn-warning" >History</a>';
                         }
                     },
                     orderable: true, 
@@ -470,9 +470,9 @@ $('#filterBulan option').map(function(n){
                         if(oData.status_kepbag == 0) {
                             return "<a href='/penilaian/"+oData.id+"/input' class='btn btn-info'>Nilai</a>";
                         }else if(oData.status_admin == 1){
-                            return '<a href="/penilaian/'+oData.id+'/nilai" class="btn btn-warning">History</a>';
+                            return '<a href="/penilaian/'+oData.id+'/nilai/'+$('#filterBulan').val()+'" class="btn btn-warning">History</a>';
                         }else if(oData.status_admin == 0){
-                            return '<a href="/penilaian/'+oData.id+'/nilai" class="btn btn-warning" disabled>History</a>';
+                            return '<a href="javascript:void(0)" class="btn btn-warning" disabled>History</a>';
                         }
                     },
                     orderable: true, 
@@ -557,9 +557,9 @@ $('#filterBulan option').map(function(n){
                         if(oData.status_kepbag == 0) {
                             return "<a href='/penilaian/"+oData.id+"/input' class='btn btn-info'>Nilai</a>";
                         }else if(oData.status_admin == 1){
-                            return '<a href="/penilaian/'+oData.id+'/nilai" class="btn btn-warning">History</a>';
+                            return '<a href="/penilaian/'+oData.id+'/nilai/'+$('#filterBulan').val()+'" class="btn btn-warning">History</a>';
                         }else if(oData.status_admin == 0){
-                            return '<a href="/penilaian/'+oData.id+'/nilai" class="btn btn-warning" disabled>History</a>';
+                            return '<a href="javascript:void(0)" class="btn btn-warning" disabled>History</a>';
                         }
                     },
                     orderable: true, 
@@ -644,9 +644,9 @@ $('#filterBulan option').map(function(n){
                         if(oData.status_kepbag == 0) {
                             return "<a href='/penilaian/"+oData.id+"/input' class='btn btn-info'>Nilai</a>";
                         }else if(oData.status_admin == 1){
-                            return '<a href="/penilaian/'+oData.id+'/nilai" class="btn btn-warning">History</a>';
+                            return '<a href="/penilaian/'+oData.id+'/nilai/'+$('#filterBulan').val()+'" class="btn btn-warning">History</a>';
                         }else if(oData.status_admin == 0){
-                            return '<a href="/penilaian/'+oData.id+'/nilai" class="btn btn-warning" disabled>History</a>';
+                            return '<a href="javascript:void(0)" class="btn btn-warning" disabled>History</a>';
                         }
                     },
                     orderable: true, 
@@ -731,9 +731,9 @@ $('#filterBulan option').map(function(n){
                         if(oData.status_kepbag == 0) {
                             return "<a href='/penilaian/"+oData.id+"/input' class='btn btn-info'>Nilai</a>";
                         }else if(oData.status_admin == 1){
-                            return '<a href="/penilaian/'+oData.id+'/nilai" class="btn btn-warning">History</a>';
+                            return '<a href="/penilaian/'+oData.id+'/nilai/'+$('#filterBulan').val()+'" class="btn btn-warning">History</a>';
                         }else if(oData.status_admin == 0){
-                            return '<a href="/penilaian/'+oData.id+'/nilai" class="btn btn-warning" disabled>History</a>';
+                            return '<a href="javascript:void(0)" class="btn btn-warning" disabled>History</a>';
                         }
                     },
                     orderable: true, 
@@ -818,9 +818,9 @@ $('#filterBulan option').map(function(n){
                         if(oData.status_kepbag == 0) {
                             return "<a href='/penilaian/"+oData.id+"/input' class='btn btn-info'>Nilai</a>";
                         }else if(oData.status_admin == 1){
-                            return '<a href="/penilaian/'+oData.id+'/nilai" class="btn btn-warning">History</a>';
+                            return '<a href="/penilaian/'+oData.id+'/nilai/'+$('#filterBulan').val()+'" class="btn btn-warning">History</a>';
                         }else if(oData.status_admin == 0){
-                            return '<a href="/penilaian/'+oData.id+'/nilai" class="btn btn-warning" disabled>History</a>';
+                            return '<a href="javascript:void(0)" class="btn btn-warning" disabled>History</a>';
                         }
                     },
                     orderable: true, 
@@ -905,9 +905,9 @@ $('#filterBulan option').map(function(n){
                         if(oData.status_kepbag == 0) {
                             return "<a href='/penilaian/"+oData.id+"/input' class='btn btn-info'>Nilai</a>";
                         }else if(oData.status_admin == 1){
-                            return '<a href="/penilaian/'+oData.id+'/nilai" class="btn btn-warning">History</a>';
+                            return '<a href="/penilaian/'+oData.id+'/nilai/'+$('#filterBulan').val()+'" class="btn btn-warning">History</a>';
                         }else if(oData.status_admin == 0){
-                            return '<a href="/penilaian/'+oData.id+'/nilai" class="btn btn-warning" disabled>History</a>';
+                            return '<a href="javascript:void(0)" class="btn btn-warning" disabled>History</a>';
                         }
                     },
                     orderable: true, 
@@ -992,9 +992,9 @@ $('#filterBulan option').map(function(n){
                         if(oData.status_kepbag == 0) {
                             return "<a href='/penilaian/"+oData.id+"/input' class='btn btn-info'>Nilai</a>";
                         }else if(oData.status_admin == 1){
-                            return '<a href="/penilaian/'+oData.id+'/nilai" class="btn btn-warning">History</a>';
+                            return '<a href="/penilaian/'+oData.id+'/nilai/'+$('#filterBulan').val()+'" class="btn btn-warning">History</a>';
                         }else if(oData.status_admin == 0){
-                            return '<a href="/penilaian/'+oData.id+'/nilai" class="btn btn-warning" disabled>History</a>';
+                            return '<a href="javascript:void(0)" class="btn btn-warning" disabled>History</a>';
                         }
                     },
                     orderable: true, 
@@ -1079,9 +1079,9 @@ $('#filterBulan option').map(function(n){
                         if(oData.status_kepbag == 0) {
                             return "<a href='/penilaian/"+oData.id+"/input' class='btn btn-info'>Nilai</a>";
                         }else if(oData.status_admin == 1){
-                            return '<a href="/penilaian/'+oData.id+'/nilai" class="btn btn-warning">History</a>';
+                            return '<a href="/penilaian/'+oData.id+'/nilai/'+$('#filterBulan').val()+'" class="btn btn-warning">History</a>';
                         }else if(oData.status_admin == 0){
-                            return '<a href="/penilaian/'+oData.id+'/nilai" class="btn btn-warning" disabled>History</a>';
+                            return '<a href="javascript:void(0)" class="btn btn-warning" disabled>History</a>';
                         }
                     },
                     orderable: true, 
@@ -1166,9 +1166,9 @@ $('#filterBulan option').map(function(n){
                         if(oData.status_kepbag == 0) {
                             return "<a href='/penilaian/"+oData.id+"/input' class='btn btn-info'>Nilai</a>";
                         }else if(oData.status_admin == 1){
-                            return '<a href="/penilaian/'+oData.id+'/nilai" class="btn btn-warning">History</a>';
+                            return '<a href="/penilaian/'+oData.id+'/nilai/'+$('#filterBulan').val()+'" class="btn btn-warning">History</a>';
                         }else if(oData.status_admin == 0){
-                            return '<a href="/penilaian/'+oData.id+'/nilai" class="btn btn-warning" disabled>History</a>';
+                            return '<a href="javascript:void(0)" class="btn btn-warning" disabled>History</a>';
                         }
                     },
                     orderable: true, 
@@ -1253,9 +1253,9 @@ $('#filterBulan option').map(function(n){
                         if(oData.status_kepbag == 0) {
                             return "<a href='/penilaian/"+oData.id+"/input' class='btn btn-info'>Nilai</a>";
                         }else if(oData.status_admin == 1){
-                            return '<a href="/penilaian/'+oData.id+'/nilai" class="btn btn-warning">History</a>';
+                            return '<a href="/penilaian/'+oData.id+'/nilai/'+$('#filterBulan').val()+'" class="btn btn-warning">History</a>';
                         }else if(oData.status_admin == 0){
-                            return '<a href="/penilaian/'+oData.id+'/nilai" class="btn btn-warning" disabled>History</a>';
+                            return '<a href="javascript:void(0)" class="btn btn-warning" disabled>History</a>';
                         }
                     },
                     orderable: true, 

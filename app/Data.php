@@ -13,4 +13,9 @@ class Data extends Model
         return $this->belongsTo('App\Karyawan');
     }
 
+    public function kriteria()
+    {
+        return $this->belongsTo('App\Kriteria');
+    }
+
 }

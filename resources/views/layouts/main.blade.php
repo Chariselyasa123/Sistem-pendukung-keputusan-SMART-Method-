@@ -116,7 +116,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <li class="nav-item">
                         <a href="{{ url('/info_karyawan') }}" class="nav-link {{ 'info_karyawan' == request()->path() ? 'active' : '' }}">
                             <i class="nav-icon fas fa-info"></i>
-                            <p>Informasi Karyawan</p>
+                            <p>Karyawan</p>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -131,24 +131,24 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             <p>Penilaian</p>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a href="{{ url('/info_karyawan/create') }}" class="nav-link {{ 'info_karyawan/create' == request()->path() ? 'active' : '' }}">
-                            <i class="nav-icon fas fa-male"></i>
-                            <p>Input Karyawan</p>
-                        </a>
-                    </li>
-                    <li class="nav-item has-treeview {{ 'putus_kontrak' == request()->path() ? 'menu-open' : '' }}">
+                    <li class="nav-item has-treeview {{ 'smart_method' == request()->path() ? 'menu-open' : '' }}">
                         <a href="#" class="nav-link">
                             <i class="nav-icon fas fa-cog"></i>
                             <p>More<i class="right fas fa-angle-left"></i></p>
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
+                                <a href="{{ url('/smart_method') }}" class="nav-link {{ 'smart_method' == request()->path() ? 'active' : '' }}">
+                                    <i class="far fa-file-code nav-icon"></i>
+                                    <p>Kriteria Penilaian</p>
+                                </a>
+                            </li>
+                            {{-- <li class="nav-item">
                                 <a href="{{ url('/putus_kontrak') }}" class="nav-link {{ 'putus_kontrak' == request()->path() ? 'active' : '' }}">
                                     <i class="far fa-file-code nav-icon"></i>
                                     <p>Putus Kontrak</p>
                                 </a>
-                            </li>
+                            </li> --}}
                         </ul>
                     </li>
                 </ul>

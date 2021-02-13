@@ -59,83 +59,39 @@ class KryawanController extends Controller
         return view('karyawan.habiskntrk', compact('office', 'intake', 'warehousing', 'produksi', 'ga', 'premix', 'maintance', 'truckscale', 'kebersihan', 'qclab'));
     }
 
-    public function getHabisKontrakOffice(Request $request)
+    public function getHabisKontrak(Request $request)
     {
-        if($request->ajax()){
-            $data = Karyawan::whereMonth('berakhir_kontrak', Carbon::now()->month)->whereYear('berakhir_kontrak', Carbon::now()->year)->where('departemen', 'office')->get();
-            return Datatables::of($data)->addIndexColumn()->make(true);
-        }
-    }
-
-    public function getHabisKontrakIntake(Request $request)
-    {
-        if($request->ajax()){
-            $data = Karyawan::whereMonth('berakhir_kontrak', Carbon::now()->month)->whereYear('berakhir_kontrak', Carbon::now()->year)->where('departemen', 'intake')->get();
-            return Datatables::of($data)->addIndexColumn()->make(true);
-        }
-    }
-
-    public function getHabisKontrakWarehouse(Request $request)
-    {
-        if($request->ajax()){
-            $data = Karyawan::whereMonth('berakhir_kontrak', Carbon::now()->month)->whereYear('berakhir_kontrak', Carbon::now()->year)->where('departemen', 'warehousing')->get();
-            return Datatables::of($data)->addIndexColumn()->make(true);
-        }
-    }
-
-    public function getHabisKontrakProduksi(Request $request)
-    {
-        if($request->ajax()){
-            $data =Karyawan::whereMonth('berakhir_kontrak', Carbon::now()->month)->whereYear('berakhir_kontrak', Carbon::now()->year)->whereIn('departemen', ['produksi', 'hand add'])->get();
-            return Datatables::of($data)->addIndexColumn()->make(true);
-        }
-    }
-
-    public function getHabisKontrakQclab(Request $request)
-    {
-        if($request->ajax()){
-            $data = Karyawan::whereMonth('berakhir_kontrak', Carbon::now()->month)->whereYear('berakhir_kontrak', Carbon::now()->year)->where('departemen', 'lab')->get();
-            return Datatables::of($data)->addIndexColumn()->make(true);
-        }
-    }
-
-    public function getHabisKontrakGa(Request $request)
-    {
-        if($request->ajax()){
-            $data = Karyawan::whereMonth('berakhir_kontrak', Carbon::now()->month)->whereYear('berakhir_kontrak', Carbon::now()->year)->where('departemen', 'ga')->get();
-            return Datatables::of($data)->addIndexColumn()->make(true);
-        }
-    }
-
-    public function getHabisKontrakTruckScale(Request $request)
-    {
-        if($request->ajax()){
-            $data = Karyawan::whereMonth('berakhir_kontrak', Carbon::now()->month)->whereYear('berakhir_kontrak', Carbon::now()->year)->where('departemen', 'truck scale')->get();
-            return Datatables::of($data)->addIndexColumn()->make(true);
-        }
-    }
-
-    public function getHabisKontrakPremix(Request $request)
-    {
-        if($request->ajax()){
-            $data =Karyawan::whereMonth('berakhir_kontrak', Carbon::now()->month)->whereYear('berakhir_kontrak', Carbon::now()->year)->where('departemen', 'premix')->get();
-            return Datatables::of($data)->addIndexColumn()->make(true);
-        }
-    }
-
-    public function getHabisKontrakMaintance(Request $request)
-    {
-        if($request->ajax()){
-            $data = Karyawan::whereMonth('berakhir_kontrak', Carbon::now()->month)->whereYear('berakhir_kontrak', Carbon::now()->year)->where('departemen', 'maintenance')->get();
-            return Datatables::of($data)->addIndexColumn()->make(true);
-        }
-    }
-
-    public function getHabisKontrakKebersihan(Request $request)
-    {
-        if($request->ajax()){
-            $data = Karyawan::whereMonth('berakhir_kontrak', Carbon::now()->month)->whereYear('berakhir_kontrak', Carbon::now()->year)->where('departemen', 'kebersihan')->get();
-            return Datatables::of($data)->addIndexColumn()->make(true);
+        switch ($request->get('dep')) {
+            case 'intake':
+                $data = Karyawan::whereMonth('berakhir_kontrak', Carbon::now()->month)->whereYear('berakhir_kontrak', Carbon::now()->year)->where('departemen', 'intake')->get();
+                return Datatables::of($data)->addIndexColumn()->make(true);
+            case 'warehousing':
+                $data = Karyawan::whereMonth('berakhir_kontrak', Carbon::now()->month)->whereYear('berakhir_kontrak', Carbon::now()->year)->where('departemen', 'warehousing')->get();
+                return Datatables::of($data)->addIndexColumn()->make(true);
+            case 'office':
+                $data = Karyawan::whereMonth('berakhir_kontrak', Carbon::now()->month)->whereYear('berakhir_kontrak', Carbon::now()->year)->where('departemen', 'office')->get();
+                return Datatables::of($data)->addIndexColumn()->make(true);
+            case 'produksi':
+                $data = Karyawan::whereMonth('berakhir_kontrak', Carbon::now()->month)->whereYear('berakhir_kontrak', Carbon::now()->year)->whereIn('departemen', ['produksi', 'hand add'])->get();
+                return Datatables::of($data)->addIndexColumn()->make(true);
+            case 'ga':
+                $data = Karyawan::whereMonth('berakhir_kontrak', Carbon::now()->month)->whereYear('berakhir_kontrak', Carbon::now()->year)->where('departemen', 'ga')->get();
+                return Datatables::of($data)->addIndexColumn()->make(true);
+            case 'truck':
+                $data = Karyawan::whereMonth('berakhir_kontrak', Carbon::now()->month)->whereYear('berakhir_kontrak', Carbon::now()->year)->where('departemen', 'truck scale')->get();
+                return Datatables::of($data)->addIndexColumn()->make(true);
+            case 'lab':
+                $data = Karyawan::whereMonth('berakhir_kontrak', Carbon::now()->month)->whereYear('berakhir_kontrak', Carbon::now()->year)->where('departemen', 'lab')->get();
+                return Datatables::of($data)->addIndexColumn()->make(true);
+            case 'premix':
+                $data = Karyawan::whereMonth('berakhir_kontrak', Carbon::now()->month)->whereYear('berakhir_kontrak', Carbon::now()->year)->where('departemen', 'premix')->get();
+                return Datatables::of($data)->addIndexColumn()->make(true);
+            case 'maintenance':
+                $data = Karyawan::whereMonth('berakhir_kontrak', Carbon::now()->month)->whereYear('berakhir_kontrak', Carbon::now()->year)->where('departemen', 'maintenance')->get();
+                return Datatables::of($data)->addIndexColumn()->make(true);
+            case 'kebersihan':
+                $data = Karyawan::whereMonth('berakhir_kontrak', Carbon::now()->month)->whereYear('berakhir_kontrak', Carbon::now()->year)->where('departemen', 'kebersihan')->get();
+                return Datatables::of($data)->addIndexColumn()->make(true);
         }
     }
 
@@ -264,10 +220,11 @@ class KryawanController extends Controller
         }
         $nowDate = Carbon::now();
         $endDate = Carbon::now()->endOfMonth()->addDays(-14);
+
         return view('karyawan.penilaian', compact('endDate', 'isNullAdmin', 'isNullOffice', 'isNullIntake', 'isNullWarehousing', 'isNullProduksi', 'isNullGa', 'isNullLab', 'isNullTruck', 'isNullPremix', 'isNullMaintance', 'isNullKebersihan', 'statusKebersihan', 'statusMaintance', 'statusPremix', 'statusTruck', 'statusQclab', 'statusGa', 'statusProduksi', 'statusOffice', 'statusIntake', 'statusWarehousing', 'karyawan', 'nowDate', 'statusAdmin'));
     }
 
-    public function getNilai($id)
+    public function getNilai($id, $bulan)
     {
         $kehadiran = Kriteria::where('id', 1)->first();
         $motivasi = Kriteria::where('id', 2)->first();
@@ -277,128 +234,30 @@ class KryawanController extends Controller
         $usia = Kriteria::where('id', 6)->first();
         $nilai = Data::where('karyawan_id', $id)->get()->toArray();
         $karyawan = Karyawan::where('id', $id)->first();
-        return view('karyawan.nilai', compact('nilai', 'karyawan', 'kehadiran', 'motivasi', 'komunikasi', 'penguasaan', 'pAndS', 'usia'));
+        return view('karyawan.nilai', compact('bulan', 'nilai', 'karyawan', 'kehadiran', 'motivasi', 'komunikasi', 'penguasaan', 'pAndS', 'usia'));
     }
     
-    public function getNilaiDetail($id)
+    public function getNilaiDetail($id, $bulan)
     {
         $nilai = Data::where('karyawan_id', $id)->get()->toArray();
         $karyawan = Karyawan::where('id', $id)->first();
-        $smartMethod = app(HomeController::class)->smartMethod()->where('id', $id)->first();
-        return view('karyawan.nilaiDetail', compact('smartMethod', 'nilai', 'karyawan'));
+        $smartMethod = $this->smartMethod($bulan)->where('id', $id)->first();
+        return view('karyawan.nilaiDetail', compact('bulan', 'smartMethod', 'nilai', 'karyawan'));
     }
 
-    public function printNilai($id)
+    public function printNilai($id, $bulan)
     {
         $nilai = Data::where('karyawan_id', $id)->get()->toArray();
         $karyawan = Karyawan::where('id', $id)->first();
-        $smartMethod = app(HomeController::class)->smartMethod()->where('id', $id)->first();
+        $smartMethod = $this->smartMethod($bulan)->where('id', $id)->first();
         return view('karyawan.printnilai', compact('smartMethod', 'nilai', 'karyawan'));
     }
 
     public function getPenilaian(Request $request)
     {
-        if($request->get('dep') == 'admin'){
-            $data = Karyawan::select('*');
-            return Datatables::of($data)->addIndexColumn()->filter(function ($query) use ($request){
-                if(!empty($request->get('bulan'))){
-                    $query->join('status', 'karyawans.id', 'status.karyawan_id')->whereMonth('berakhir_kontrak', $request->get('bulan'));
-                }else{
-                    $query->join('status', 'karyawans.id', 'status.karyawan_id')->whereMonth('berakhir_kontrak', Carbon::now()->month);
-                }
-            })->addColumn('action', function($row){$actionBtn = 'Hapus'; return $actionBtn;})->rawColumns(['action'])->make(true);
-        }
-        elseif($request->get('dep') == 'intake'){
-            $data = Karyawan::select('*');
-            return Datatables::of($data)->addIndexColumn()->filter(function ($query) use ($request){
-                if(!empty($request->get('bulan'))){
-                    $query->join('status', 'karyawans.id', 'status.karyawan_id')->whereMonth('berakhir_kontrak', $request->get('bulan'))->where('departemen', 'intake');
-                }else{
-                    $query->join('status', 'karyawans.id', 'status.karyawan_id')->whereMonth('berakhir_kontrak', Carbon::now()->month)->whereYear('berakhir_kontrak', Carbon::now()->year)->where('departemen', 'intake')->get();
-                }
-            })->addColumn('action', function($row){$actionBtn = 'Hapus'; return $actionBtn;})->rawColumns(['action'])->make(true);
-        }
-        elseif($request->get('dep') == 'warehouse'){
-            $data = Karyawan::select('*');
-            return Datatables::of($data)->addIndexColumn()->filter(function ($query) use ($request){
-                if(!empty($request->get('bulan'))){
-                    $query->join('status', 'karyawans.id', 'status.karyawan_id')->whereMonth('berakhir_kontrak', $request->get('bulan'))->where('departemen', 'warehousing');
-                }else{
-                    $query->join('status', 'karyawans.id', 'status.karyawan_id')->whereMonth('berakhir_kontrak', Carbon::now()->month)->whereYear('berakhir_kontrak', Carbon::now()->year)->where('departemen', 'warehousing')->get();
-                }
-            })->addColumn('action', function($row){$actionBtn = 'Hapus'; return $actionBtn;})->rawColumns(['action'])->make(true);
-        }
-        elseif($request->get('dep') == 'produksi'){
-            $data = Karyawan::select('*');
-            return Datatables::of($data)->addIndexColumn()->filter(function ($query) use ($request){
-                if(!empty($request->get('bulan'))){
-                    $query->join('status', 'karyawans.id', 'status.karyawan_id')->whereMonth('berakhir_kontrak', $request->get('bulan'))->whereIn('departemen', ['hand add', 'produksi']);
-                }else{
-                    $query->join('status', 'karyawans.id', 'status.karyawan_id')->whereMonth('berakhir_kontrak', Carbon::now()->month)->whereYear('berakhir_kontrak', Carbon::now()->year)->whereIn('departemen', ['hand add', 'produksi'])->get();
-                }
-            })->addColumn('action', function($row){$actionBtn = 'Hapus'; return $actionBtn;})->rawColumns(['action'])->make(true);
-        }
-        elseif($request->get('dep') == 'ga'){
-            $data = Karyawan::select('*');
-            return Datatables::of($data)->addIndexColumn()->filter(function ($query) use ($request){
-                if(!empty($request->get('bulan'))){
-                    $query->join('status', 'karyawans.id', 'status.karyawan_id')->whereMonth('berakhir_kontrak', $request->get('bulan'))->where('departemen', 'ga');
-                }else{
-                    $query->join('status', 'karyawans.id', 'status.karyawan_id')->whereMonth('berakhir_kontrak', Carbon::now()->month)->whereYear('berakhir_kontrak', Carbon::now()->year)->where('departemen', 'ga')->get();
-                }
-            })->addColumn('action', function($row){$actionBtn = 'Hapus'; return $actionBtn;})->rawColumns(['action'])->make(true);
-        }
-        elseif($request->get('dep') == 'lab'){
-            $data = Karyawan::select('*');
-            return Datatables::of($data)->addIndexColumn()->filter(function ($query) use ($request){
-                if(!empty($request->get('bulan'))){
-                    $query->join('status', 'karyawans.id', 'status.karyawan_id')->whereMonth('berakhir_kontrak', $request->get('bulan'))->where('departemen', 'lab');
-                }else{
-                    $query->join('status', 'karyawans.id', 'status.karyawan_id')->whereMonth('berakhir_kontrak', Carbon::now()->month)->whereYear('berakhir_kontrak', Carbon::now()->year)->where('departemen', 'lab')->get();
-                }
-            })->addColumn('action', function($row){$actionBtn = 'Hapus'; return $actionBtn;})->rawColumns(['action'])->make(true);
-        }
-        elseif($request->get('dep') == 'truck'){
-            $data = Karyawan::select('*');
-            return Datatables::of($data)->addIndexColumn()->filter(function ($query) use ($request){
-                if(!empty($request->get('bulan'))){
-                    $query->join('status', 'karyawans.id', 'status.karyawan_id')->whereMonth('berakhir_kontrak', $request->get('bulan'))->where('departemen', 'truck scale');
-                }else{
-                    $query->join('status', 'karyawans.id', 'status.karyawan_id')->whereMonth('berakhir_kontrak', Carbon::now()->month)->whereYear('berakhir_kontrak', Carbon::now()->year)->where('departemen', 'truck scale')->get();
-                }
-            })->addColumn('action', function($row){$actionBtn = 'Hapus'; return $actionBtn;})->rawColumns(['action'])->make(true);
-        }
-        elseif($request->get('dep') == 'premix'){
-            $data = Karyawan::select('*');
-            return Datatables::of($data)->addIndexColumn()->filter(function ($query) use ($request){
-                if(!empty($request->get('bulan'))){
-                    $query->join('status', 'karyawans.id', 'status.karyawan_id')->whereMonth('berakhir_kontrak', $request->get('bulan'))->where('departemen', 'premix');
-                }else{
-                    $query->join('status', 'karyawans.id', 'status.karyawan_id')->whereMonth('berakhir_kontrak', Carbon::now()->month)->whereYear('berakhir_kontrak', Carbon::now()->year)->where('departemen', 'premix')->get();
-                }
-            })->addColumn('action', function($row){$actionBtn = 'Hapus'; return $actionBtn;})->rawColumns(['action'])->make(true);
-        }
-        elseif($request->get('dep') == 'kebersihan'){
-            $data = Karyawan::select('*');
-            return Datatables::of($data)->addIndexColumn()->filter(function ($query) use ($request){
-                if(!empty($request->get('bulan'))){
-                    $query->join('status', 'karyawans.id', 'status.karyawan_id')->whereMonth('berakhir_kontrak', $request->get('bulan'))->where('departemen', 'kebersihan');
-                }else{
-                    $query->join('status', 'karyawans.id', 'status.karyawan_id')->whereMonth('berakhir_kontrak', Carbon::now()->month)->whereYear('berakhir_kontrak', Carbon::now()->year)->where('departemen', 'kebersihan')->get();
-                }
-            })->addColumn('action', function($row){$actionBtn = 'Hapus'; return $actionBtn;})->rawColumns(['action'])->make(true);
-        }
-        elseif($request->get('dep') == 'maintenance'){
-            $data = Karyawan::select('*');
-            return Datatables::of($data)->addIndexColumn()->filter(function ($query) use ($request){
-                if(!empty($request->get('bulan'))){
-                    $query->join('status', 'karyawans.id', 'status.karyawan_id')->whereMonth('berakhir_kontrak', $request->get('bulan'))->where('departemen', 'maintenance');
-                }else{
-                    $query->join('status', 'karyawans.id', 'status.karyawan_id')->whereMonth('berakhir_kontrak', Carbon::now()->month)->whereYear('berakhir_kontrak', Carbon::now()->year)->where('departemen', 'maintenance')->get();
-                }
-            })->addColumn('action', function($row){$actionBtn = 'Hapus'; return $actionBtn;})->rawColumns(['action'])->make(true);
-        }
+        return $this->getData($request, 'karyawan');
     }
+
 
     public function inputPenilaian(Karyawan $karyawan)
     {
@@ -433,6 +292,7 @@ class KryawanController extends Controller
             }elseif($request->kehadiran > 10){
                 $kehadiran = 0;
             }
+            // $kehadiran = ($request->kehadiran == 0) ? 100 : ($request->kehadiran > 0 && $request->kehadiran <= 3) ? 75 : ($request->kehadiran >= 4 && $request->kehadiran <= 6) ? 50 : ($request->kehadiran >= 7 && $request->kehadiran <= 10) ? 25 : ($request->kehadiran > 10) ? 0 : 0;
             $data = [
                 [
                     'karyawan_id' => $request->karyawan_id, 
@@ -659,5 +519,12 @@ class KryawanController extends Controller
         Karyawan::where('id', $karyawan->id)->update(['foto' => $nama_file]);
 
         return redirect()->back()->with('status', 'Foto Karyawan Berhasil Diupdate!');
+    }
+
+    public function smart()
+    {
+        $kriterias = Kriteria::select('kriteria', 'bobot')->get();
+        // dump($kriteria);
+        return view('karyawan.smart', compact('kriterias'));
     }
 }

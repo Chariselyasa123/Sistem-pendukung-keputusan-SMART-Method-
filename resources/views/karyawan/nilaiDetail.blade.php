@@ -45,7 +45,7 @@
     <div class="card card-primary card-outline">
         <div class="card-header">
             <h3 class="card-title"><i class="fas fa-list"></i> History Penilaian karyawan</h3>
-            <a href="/penilaian/{{ $karyawan->id }}/nilai/print" class="btn btn-app float-right" target="_blank"><i class="fas fa-print"></i> PRINT</a>
+            <a href="/penilaian/{{ $karyawan->id }}/nilai/{{ $bulan }}/print" class="btn btn-app float-right" target="_blank"><i class="fas fa-print"></i> PRINT</a>
         </div>
         <div class="card-body">
             <table class="table table-bordered">

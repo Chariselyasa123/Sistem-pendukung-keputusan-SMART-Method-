@@ -11,8 +11,8 @@
     @endif
     <div class="card card-primary card-outline">
         <div class="card-header">
-            
             <h3 class="card-title"><i class="fas fa-info"></i> Info Karyawan</h3>
+            <a href="{{ url('/info_karyawan/create') }}" class="btn btn-info float-right"><i class="fas fa-plus"></i> Tambah</a>
         </div>
         <div class="card-body">
             <table class="table table-striped table-bordered dt-responsive nowrap" width="100%" id="infoKarya" style="font-size: 0.875em;">
