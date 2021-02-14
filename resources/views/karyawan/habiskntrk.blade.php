@@ -259,7 +259,10 @@
             responsive:true,
             processing: true,
             serverSide: true,
-            ajax: "{{ route('habis_kontrak.office') }}",
+            ajax: {
+                url:"{{ route('habis_kontrak.get') }}",
+                data: d => {d.dep = 'office'}
+            },
             columns: [
                 {data: 'DT_RowIndex'},
                 {data: 'no_induk_karyawan', name: 'no_induk_karyawan'},
@@ -277,7 +280,10 @@
             responsive:true,
             processing: true,
             serverSide: true,
-            ajax: "{{ route('habis_kontrak.intake') }}",
+            ajax: {
+                url:"{{ route('habis_kontrak.get') }}",
+                data: d => {d.dep = 'intake'}
+            },
             columns: [
                 {data: 'DT_RowIndex'},
                 {data: 'no_induk_karyawan', name: 'no_induk_karyawan'},
@@ -295,7 +301,10 @@
             responsive:true,
             processing: true,
             serverSide: true,
-            ajax: "{{ route('habis_kontrak.warehousing') }}",
+            ajax: {
+                url:"{{ route('habis_kontrak.get') }}",
+                data: d => {d.dep = 'warehousing'}
+            },
             columns: [
                 {data: 'DT_RowIndex'},
                 {data: 'no_induk_karyawan', name: 'no_induk_karyawan'},
@@ -313,7 +322,10 @@
             responsive:true,
             processing: true,
             serverSide: true,
-            ajax: "{{ route('habis_kontrak.produksi') }}",
+            ajax: {
+                url:"{{ route('habis_kontrak.get') }}",
+                data: d => {d.dep = 'produksi'}
+            },
             columns: [
                 {data: 'DT_RowIndex'},
                 {data: 'no_induk_karyawan', name: 'no_induk_karyawan'},
@@ -339,7 +351,10 @@
             responsive:true,
             processing: true,
             serverSide: true,
-            ajax: "{{ route('habis_kontrak.qclab') }}",
+            ajax: {
+                url:"{{ route('habis_kontrak.get') }}",
+                data: d => {d.dep = 'lab'}
+            },
             columns: [
                 {data: 'DT_RowIndex'},
                 {data: 'no_induk_karyawan', name: 'no_induk_karyawan'},
@@ -357,7 +372,10 @@
             responsive:true,
             processing: true,
             serverSide: true,
-            ajax: "{{ route('habis_kontrak.ga') }}",
+            ajax: {
+                url:"{{ route('habis_kontrak.get') }}",
+                data: d => {d.dep = 'ga'}
+            },
             columns: [
                 {data: 'DT_RowIndex'},
                 {data: 'no_induk_karyawan', name: 'no_induk_karyawan'},
@@ -375,7 +393,10 @@
             responsive:true,
             processing: true,
             serverSide: true,
-            ajax: "{{ route('habis_kontrak.truckscale') }}",
+            ajax: {
+                url:"{{ route('habis_kontrak.get') }}",
+                data: d => {d.dep = 'truck'}
+            },
             columns: [
                 {data: 'DT_RowIndex'},
                 {data: 'no_induk_karyawan', name: 'no_induk_karyawan'},
@@ -393,7 +414,10 @@
             responsive:true,
             processing: true,
             serverSide: true,
-            ajax: "{{ route('habis_kontrak.premix') }}",
+            ajax: {
+                url:"{{ route('habis_kontrak.get') }}",
+                data: d => {d.dep = 'premix'}
+            },
             columns: [
                 {data: 'DT_RowIndex'},
                 {data: 'no_induk_karyawan', name: 'no_induk_karyawan'},
@@ -411,7 +435,10 @@
             responsive:true,
             processing: true,
             serverSide: true,
-            ajax: "{{ route('habis_kontrak.maintance') }}",
+            ajax: {
+                url:"{{ route('habis_kontrak.get') }}",
+                data: d => {d.dep = 'maintenance'}
+            },
             columns: [
                 {data: 'DT_RowIndex'},
                 {data: 'no_induk_karyawan', name: 'no_induk_karyawan'},
@@ -429,7 +456,10 @@
             responsive:true,
             processing: true,
             serverSide: true,
-            ajax: "{{ route('habis_kontrak.kebersihan') }}",
+            ajax: {
+                url:"{{ route('habis_kontrak.get') }}",
+                data: d => {d.dep = 'kebersihan'}
+            },
             columns: [
                 {data: 'DT_RowIndex'},
                 {data: 'no_induk_karyawan', name: 'no_induk_karyawan'},

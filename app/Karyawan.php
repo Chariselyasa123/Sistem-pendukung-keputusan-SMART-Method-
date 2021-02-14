@@ -11,9 +11,14 @@ class Karyawan extends Model
 
     public $timestamps = true;
 
-    public function nilai()
+    public function data()
     {
-        return $this->hasOne('App\Nilai');
+        return $this->hasMany('App\Data');
+    }
+    
+    public function status()
+    {
+        return $this->hasOne('App\Status');
     }
 
     public function getUmurAttribute()

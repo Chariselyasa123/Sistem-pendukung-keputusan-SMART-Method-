@@ -58,7 +58,7 @@
                 </div>
             </form>
     
-            <p class="mb-0">
+            {{-- <p class="mb-0">
                 @if (Route::has('password.request'))
                     <a href="{{ route('password.request') }}">
                         {{ __('Forgot Your Password?') }}
@@ -69,7 +69,7 @@
                 @if (Route::has('register'))
                     <a href="{{ route('register') }}">{{ __('Register New Member') }}</a>
                 @endif
-            </p>
+            </p> --}}
         </div>
         <!-- /.login-card-body -->
     </div>
