@@ -226,15 +226,9 @@ class KryawanController extends Controller
 
     public function getNilai($id, $bulan)
     {
-        $kehadiran = Kriteria::where('id', 1)->first();
-        $motivasi = Kriteria::where('id', 2)->first();
-        $komunikasi = Kriteria::where('id', 3)->first();
-        $penguasaan = Kriteria::where('id', 4)->first();
-        $pAndS = Kriteria::where('id', 5)->first();
-        $usia = Kriteria::where('id', 6)->first();
-        $nilai = Data::where('karyawan_id', $id)->get()->toArray();
-        $karyawan = Karyawan::where('id', $id)->first();
-        return view('karyawan.nilai', compact('bulan', 'nilai', 'karyawan', 'kehadiran', 'motivasi', 'komunikasi', 'penguasaan', 'pAndS', 'usia'));
+        $karyawan = Karyawan::with('data.kriteria', 'status')->where('id', $id)->first();
+        // dd($karyawan->status()->first()->status_admin);
+        return view('karyawan.nilai', compact('bulan', 'karyawan'));
     }
     
     public function getNilaiDetail($id, $bulan)
@@ -270,15 +264,69 @@ class KryawanController extends Controller
         return view('karyawan/inputpen', compact('karyawan', 'usia', 'kehadiran', 'pAndS', 'motivasi', 'komunikasi', 'penguasaan'));
     }
 
-    public function storePenilaian(Request $request)
+    public function editPenlilaian($id)
+    {   
+        $karyawan = Karyawan::with('data.kriteria')->where('id', $id)->first();
+        return view('karyawan.editpen', compact('karyawan'));
+    }
+
+    public function updatePenilaian(Request $request, $id)
     {
-        if($request->get('kehadiran')){
+        // dd($request->kehadiran);
+        if($request->get('kehadiran') || $request->get('pAndS') || $request->get('nilaiUmur')){
             $request->validate([
                 'kehadiran' => 'required|numeric',
                 'pAndS' => 'required'
             ],[],[
                 'kehadiran' => 'Kehadiran',
-                'pAndS' => 'Penilaian dan Sanksi'
+                'pAndS' => 'Penghargaan dan Sanksi'
+            ]);
+            $kehadiran = 100;
+            if($request->kehadiran == 0){
+                $kehadiran;
+            }elseif($request->kehadiran > 0 && $request->kehadiran <= 3){
+                $kehadiran = 75;
+            }elseif($request->kehadiran >= 4 && $request->kehadiran <= 6){
+                $kehadiran = 50;
+            }elseif($request->kehadiran >= 7 && $request->kehadiran <= 10){
+                $kehadiran = 25;
+            }elseif($request->kehadiran > 10){
+                $kehadiran = 0;
+            }
+
+            $arrayKriteria = [$request->usia_id, $request->pAndS_id, $request->kehadiran_id];
+            $arrayNilai = [$request->nilaiUmur, $request->pAndS, $kehadiran];
+            for($i = 0; $i < count($arrayKriteria); $i++ ){
+                Data::where('karyawan_id', $request->karyawan_id)->where('kriteria_id', $arrayKriteria[$i])->update(['nilai' => $arrayNilai[$i]]);
+            }
+        }elseif ($request->get('motivasi') || $request->get('komunikasi') || $request->get('penguasaan') || !$request->get('motivasi')) {
+            $request->validate([
+                'motivasi' => 'required',
+                'komunikasi' => 'required',
+                'penguasaan' => 'required'
+            ],[],[
+                'motivasi' => 'Motivasi Kerja',
+                'komunikasi' => 'Komunikasi dan Tanggung jawab',
+                'penguasaan' => 'Penguasaan pekerjaan'
+            ]);
+            $arrayKriteria = [$request->motivasi_id, $request->komunikasi_id, $request->penguasaan_id];
+            $arrayNilai = [$request->motivasi, $request->komunikasi, $request->penguasaan];
+            for($i = 0; $i < count($arrayKriteria); $i++ ){
+                Data::where('karyawan_id', $request->karyawan_id)->where('kriteria_id', $arrayKriteria[$i])->update(['nilai' => $arrayNilai[$i]]);
+            }
+        }
+        return redirect('/penilaian')->with('status', "Karyawan bernama $request->nama telah diUpdate!");
+    }
+
+    public function storePenilaian(Request $request)
+    {
+        if($request->get('kehadiran') || $request->get('pAndS') || $request->get('nilaiUmur')){
+            $request->validate([
+                'kehadiran' => 'required|numeric',
+                'pAndS' => 'required'
+            ],[],[
+                'kehadiran' => 'Kehadiran',
+                'pAndS' => 'Penghargaan dan Sanksi'
             ]);
             $kehadiran = 100;
             if($request->kehadiran == 0){
@@ -413,7 +461,9 @@ class KryawanController extends Controller
 
         $karyawan = Karyawan::create($request->all());
         $status = Status::create([
-            'karyawan_id' => $karyawan->id
+            'karyawan_id' => $karyawan->id,
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
         ]);
         return redirect('/info_karyawan')->with('status', 'Data Karyawan berhasil ditambahkan!');
     }
@@ -487,11 +537,10 @@ class KryawanController extends Controller
      * @param  App\Nilai $nilai
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        Nilai::where('karyawan_id', $id)->delete();
-        Karyawan::where('id', $id)->update(['status' => 0]);
-
+        Data::where('karyawan_id', $id)->whereIn('kriteria_id', [$request->pertamaId, $request->keduaId, $request->ketigaId])->delete();
+        Status::where('id', $id)->update(["$request->status" => 0]);
         return redirect("/penilaian")->with('status', 'Nilai Karyawan Berhasil Dihapus!');
     }
 

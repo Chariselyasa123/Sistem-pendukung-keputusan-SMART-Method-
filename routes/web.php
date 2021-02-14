@@ -14,12 +14,16 @@ use Spatie\Permission\Models\Role;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+// Route::get('/', function () {
+//     return view('welcome');
 
-    // if(auth()->user()->hasRole('hrd')){return 'ok';}
-    // auth()->user()->assignRole('kebersihan');
-    // auth()->user()->syncRoles(['admin']);
+//     if(auth()->user()->hasRole('hrd')){return 'ok';}
+//     auth()->user()->assignRole('kebersihan');
+//     auth()->user()->syncRoles(['admin']);
+// });
+
+Route::get('/', function (){
+    return view('auth.login');
 });
 
 Auth::routes();
@@ -51,10 +55,12 @@ Route::get('/penilaian', 'KryawanController@penilaian')->name('penilaian.true');
 Route::post('/penilaian', 'KryawanController@storePenilaian');
 Route::get('/penilaian/pen', 'KryawanController@getPenilaian')->name('penilaian.pen');
 Route::get('/penilaian/{karyawan}/input', 'KryawanController@inputPenilaian');
-Route::delete('/penilaian/{id}', 'KryawanController@destroy');
+Route::get('/penilaian/{id}/edit', 'KryawanController@editPenlilaian');
 Route::get('/penilaian/{nilai}/nilai/{bulan}', 'KryawanController@getNilai');
-Route::get('/penilaian/{nilai}/detail/{bulan}', 'KryawanController@getNilaiDetail');
+Route::get('/penilaian/{nilai}/nilai/{bulan}/detail', 'KryawanController@getNilaiDetail');
 Route::get('/penilaian/{id}/nilai/{bulan}/print', 'KryawanController@printNilai');
+Route::put('/penilaian/{id}', 'KryawanController@updatePenilaian');
+Route::delete('/penilaian/{id}', 'KryawanController@destroy');
 
 // Putus kontrak
 Route::get('/putus_kontrak', 'KryawanController@putusKontrak')->middleware('role:admin');

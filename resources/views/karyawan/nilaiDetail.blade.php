@@ -77,19 +77,19 @@
                         <td>{{ $nilai[2]['nilai'] }}</td>
                     </tr>
                     <tr>
-                        <td>3</td>
+                        <td>4</td>
                         <td>Penguasaan Pekerjaan</td>
                         <td>@if($nilai[3]['nilai'] == 100) Sangat Baiik @elseif($nilai[3]['nilai'] == 75) Baik @elseif($nilai[3]['nilai'] == 50) Cukup @elseif($nilai[3]['nilai'] == 25) Kurang @elseif($nilai[3]['nilai'] == 0) Sangat Kurang @endif</td>
                         <td>{{ $nilai[3]['nilai'] }}</td>
                     </tr>
                     <tr>
-                        <td>4</td>
+                        <td>5</td>
                         <td>Penghargaan dan Sanksi</td>
                         <td>@if($nilai[4]['nilai'] == 100) Penghargaan @elseif($nilai[4]['nilai'] == 75) None @elseif($nilai[4]['nilai'] == 50) SP1 @elseif($nilai[4]['nilai'] == 25) SP2 @elseif($nilai[4]['nilai'] == 0) SP3 @endif</td>
                         <td>{{ $nilai[4]['nilai'] }}</td>
                     </tr>
                     <tr>
-                        <td>5</td>
+                        <td>6</td>
                         <td>Usia</td>
                         <td>{{ $karyawan->umur }}</td>
                         <td>{{ $nilai[5]['nilai'] }}</td>

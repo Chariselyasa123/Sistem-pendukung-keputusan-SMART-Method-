@@ -22,68 +22,68 @@ class Controller extends BaseController
         if ($from == 'karyawan') {
             switch ($request->get('dep')) {
                 case 'admin':
-                    $data = Karyawan::select('*');
-                    return Datatables::of($data)->addIndexColumn()->filter(function ($query) use ($request){(!empty($request->get('bulan'))) ? $query->join('status', 'karyawans.id', 'status.karyawan_id')->whereMonth('berakhir_kontrak', $request->get('bulan')) : $query->join('status', 'karyawans.id', 'status.karyawan_id')->whereMonth('berakhir_kontrak', Carbon::now()->month);})->addColumn('action', function($row){$actionBtn = 'Hapus'; return $actionBtn;})->rawColumns(['action'])->make(true);
+                    $data = Karyawan::with('status', 'data');
+                    return Datatables::of($data)->addIndexColumn()->filter(function ($query) use ($request){(!empty($request->get('bulan'))) ? $query->whereMonth('berakhir_kontrak', $request->get('bulan')) : $query->whereMonth('berakhir_kontrak', Carbon::now()->month);})->addColumn('action', function($row){$actionBtn = 'Hapus'; return $actionBtn;})->rawColumns(['action'])->make(true);
                 case 'intake':
-                    $data = Karyawan::select('*');
-                    return Datatables::of($data)->addIndexColumn()->filter(function ($query) use ($request){(!empty($request->get('bulan'))) ? $query->join('status', 'karyawans.id', 'status.karyawan_id')->whereMonth('berakhir_kontrak', $request->get('bulan'))->where('departemen', 'intake') : $query->join('status', 'karyawans.id', 'status.karyawan_id')->whereMonth('berakhir_kontrak', Carbon::now()->month)->where('departemen', 'intake');})->addColumn('action', function($row){$actionBtn = 'Hapus'; return $actionBtn;})->rawColumns(['action'])->make(true);
+                    $data = Karyawan::with('status', 'data');
+                    return Datatables::of($data)->addIndexColumn()->filter(function ($query) use ($request){(!empty($request->get('bulan'))) ? $query->whereMonth('berakhir_kontrak', $request->get('bulan'))->where('departemen', 'intake') : $query->whereMonth('berakhir_kontrak', Carbon::now()->month)->where('departemen', 'intake');})->addColumn('action', function($row){$actionBtn = 'Hapus'; return $actionBtn;})->rawColumns(['action'])->make(true);
                 case 'warehouse':
-                    $data = Karyawan::select('*');
-                    return Datatables::of($data)->addIndexColumn()->filter(function ($query) use ($request){(!empty($request->get('bulan'))) ? $query->join('status', 'karyawans.id', 'status.karyawan_id')->whereMonth('berakhir_kontrak', $request->get('bulan'))->where('departemen', 'warehousing') : $query->join('status', 'karyawans.id', 'status.karyawan_id')->whereMonth('berakhir_kontrak', Carbon::now()->month)->where('departemen', 'warehousing');})->addColumn('action', function($row){$actionBtn = 'Hapus'; return $actionBtn;})->rawColumns(['action'])->make(true);
+                    $data = Karyawan::with('status', 'data');
+                    return Datatables::of($data)->addIndexColumn()->filter(function ($query) use ($request){(!empty($request->get('bulan'))) ? $query->whereMonth('berakhir_kontrak', $request->get('bulan'))->where('departemen', 'warehousing') : $query->whereMonth('berakhir_kontrak', Carbon::now()->month)->where('departemen', 'warehousing');})->addColumn('action', function($row){$actionBtn = 'Hapus'; return $actionBtn;})->rawColumns(['action'])->make(true);
                 case 'produksi':
-                    $data = Karyawan::select('*');
-                    return Datatables::of($data)->addIndexColumn()->filter(function ($query) use ($request){(!empty($request->get('bulan'))) ? $query->join('status', 'karyawans.id', 'status.karyawan_id')->whereMonth('berakhir_kontrak', $request->get('bulan'))->whereIn('departemen', ['hand add', 'produksi']) : $query->join('status', 'karyawans.id', 'status.karyawan_id')->whereMonth('berakhir_kontrak', Carbon::now()->month)->whereIn('departemen', ['hand add', 'produksi']);})->addColumn('action', function($row){$actionBtn = 'Hapus'; return $actionBtn;})->rawColumns(['action'])->make(true);
+                    $data = Karyawan::with('status', 'data');
+                    return Datatables::of($data)->addIndexColumn()->filter(function ($query) use ($request){(!empty($request->get('bulan'))) ? $query->whereMonth('berakhir_kontrak', $request->get('bulan'))->whereIn('departemen', ['hand add', 'produksi']) : $query->whereMonth('berakhir_kontrak', Carbon::now()->month)->whereIn('departemen', ['hand add', 'produksi']);})->addColumn('action', function($row){$actionBtn = 'Hapus'; return $actionBtn;})->rawColumns(['action'])->make(true);
                 case 'ga':
-                    $data = Karyawan::select('*');
-                    return Datatables::of($data)->addIndexColumn()->filter(function ($query) use ($request){(!empty($request->get('bulan'))) ? $query->join('status', 'karyawans.id', 'status.karyawan_id')->whereMonth('berakhir_kontrak', $request->get('bulan'))->where('departemen', 'ga') : $query->join('status', 'karyawans.id', 'status.karyawan_id')->whereMonth('berakhir_kontrak', Carbon::now()->month)->where('departemen', 'ga');})->addColumn('action', function($row){$actionBtn = 'Hapus'; return $actionBtn;})->rawColumns(['action'])->make(true);
+                    $data = Karyawan::with('status', 'data');
+                    return Datatables::of($data)->addIndexColumn()->filter(function ($query) use ($request){(!empty($request->get('bulan'))) ? $query->whereMonth('berakhir_kontrak', $request->get('bulan'))->where('departemen', 'ga') : $query->whereMonth('berakhir_kontrak', Carbon::now()->month)->where('departemen', 'ga');})->addColumn('action', function($row){$actionBtn = 'Hapus'; return $actionBtn;})->rawColumns(['action'])->make(true);
                 case 'lab':
-                    $data = Karyawan::select('*');
-                    return Datatables::of($data)->addIndexColumn()->filter(function ($query) use ($request){(!empty($request->get('bulan'))) ? $query->join('status', 'karyawans.id', 'status.karyawan_id')->whereMonth('berakhir_kontrak', $request->get('bulan'))->where('departemen', 'lab') : $query->join('status', 'karyawans.id', 'status.karyawan_id')->whereMonth('berakhir_kontrak', Carbon::now()->month)->where('departemen', 'lab');})->addColumn('action', function($row){$actionBtn = 'Hapus'; return $actionBtn;})->rawColumns(['action'])->make(true);
+                    $data = Karyawan::with('status', 'data');
+                    return Datatables::of($data)->addIndexColumn()->filter(function ($query) use ($request){(!empty($request->get('bulan'))) ? $query->whereMonth('berakhir_kontrak', $request->get('bulan'))->where('departemen', 'lab') : $query->whereMonth('berakhir_kontrak', Carbon::now()->month)->where('departemen', 'lab');})->addColumn('action', function($row){$actionBtn = 'Hapus'; return $actionBtn;})->rawColumns(['action'])->make(true);
                 case 'truck':
-                    $data = Karyawan::select('*');
-                    return Datatables::of($data)->addIndexColumn()->filter(function ($query) use ($request){(!empty($request->get('bulan'))) ? $query->join('status', 'karyawans.id', 'status.karyawan_id')->whereMonth('berakhir_kontrak', $request->get('bulan'))->where('departemen', 'truck scale') : $query->join('status', 'karyawans.id', 'status.karyawan_id')->whereMonth('berakhir_kontrak', Carbon::now()->month)->where('departemen', 'truck scale');})->addColumn('action', function($row){$actionBtn = 'Hapus'; return $actionBtn;})->rawColumns(['action'])->make(true);
+                    $data = Karyawan::with('status', 'data');
+                    return Datatables::of($data)->addIndexColumn()->filter(function ($query) use ($request){(!empty($request->get('bulan'))) ? $query->whereMonth('berakhir_kontrak', $request->get('bulan'))->where('departemen', 'truck scale') : $query->whereMonth('berakhir_kontrak', Carbon::now()->month)->where('departemen', 'truck scale');})->addColumn('action', function($row){$actionBtn = 'Hapus'; return $actionBtn;})->rawColumns(['action'])->make(true);
                 case 'premix':
-                    $data = Karyawan::select('*');
-                    return Datatables::of($data)->addIndexColumn()->filter(function ($query) use ($request){(!empty($request->get('bulan'))) ? $query->join('status', 'karyawans.id', 'status.karyawan_id')->whereMonth('berakhir_kontrak', $request->get('bulan'))->where('departemen', 'premix') : $query->join('status', 'karyawans.id', 'status.karyawan_id')->whereMonth('berakhir_kontrak', Carbon::now()->month)->where('departemen', 'premix');})->addColumn('action', function($row){$actionBtn = 'Hapus'; return $actionBtn;})->rawColumns(['action'])->make(true);
+                    $data = Karyawan::with('status', 'data');
+                    return Datatables::of($data)->addIndexColumn()->filter(function ($query) use ($request){(!empty($request->get('bulan'))) ? $query->whereMonth('berakhir_kontrak', $request->get('bulan'))->where('departemen', 'premix') : $query->whereMonth('berakhir_kontrak', Carbon::now()->month)->where('departemen', 'premix');})->addColumn('action', function($row){$actionBtn = 'Hapus'; return $actionBtn;})->rawColumns(['action'])->make(true);
                 case 'maintenance':
-                    $data = Karyawan::select('*');
-                    return Datatables::of($data)->addIndexColumn()->filter(function ($query) use ($request){(!empty($request->get('bulan'))) ? $query->join('status', 'karyawans.id', 'status.karyawan_id')->whereMonth('berakhir_kontrak', $request->get('bulan'))->where('departemen', 'maintenance') : $query->join('status', 'karyawans.id', 'status.karyawan_id')->whereMonth('berakhir_kontrak', Carbon::now()->month)->where('departemen', 'maintenance');})->addColumn('action', function($row){$actionBtn = 'Hapus'; return $actionBtn;})->rawColumns(['action'])->make(true);
+                    $data = Karyawan::with('status', 'data');
+                    return Datatables::of($data)->addIndexColumn()->filter(function ($query) use ($request){(!empty($request->get('bulan'))) ? $query->whereMonth('berakhir_kontrak', $request->get('bulan'))->where('departemen', 'maintenance') : $query->whereMonth('berakhir_kontrak', Carbon::now()->month)->where('departemen', 'maintenance');})->addColumn('action', function($row){$actionBtn = 'Hapus'; return $actionBtn;})->rawColumns(['action'])->make(true);
                 case 'kebersihan':
-                    $data = Karyawan::select('*');
-                    return Datatables::of($data)->addIndexColumn()->filter(function ($query) use ($request){(!empty($request->get('bulan'))) ? $query->join('status', 'karyawans.id', 'status.karyawan_id')->whereMonth('berakhir_kontrak', $request->get('bulan'))->where('departemen', 'kebersihan') : $query->join('status', 'karyawans.id', 'status.karyawan_id')->whereMonth('berakhir_kontrak', Carbon::now()->month)->where('departemen', 'kebersihan');})->addColumn('action', function($row){$actionBtn = 'Hapus'; return $actionBtn;})->rawColumns(['action'])->make(true);
+                    $data = Karyawan::with('status', 'data');
+                    return Datatables::of($data)->addIndexColumn()->filter(function ($query) use ($request){(!empty($request->get('bulan'))) ? $query->whereMonth('berakhir_kontrak', $request->get('bulan'))->where('departemen', 'kebersihan') : $query->whereMonth('berakhir_kontrak', Carbon::now()->month)->where('departemen', 'kebersihan');})->addColumn('action', function($row){$actionBtn = 'Hapus'; return $actionBtn;})->rawColumns(['action'])->make(true);
             }
         }else{
             switch ($request->get('dep')) {
                 case 'admin':
-                    $data = Karyawan::select('*');
-                    return Datatables::of($data)->addIndexColumn()->filter(function ($query) use ($request){(!empty($request->get('bulan'))) ? $query->join('status', 'karyawans.id', 'status.karyawan_id')->whereMonth('berakhir_kontrak', $request->get('bulan')) : $query->join('status', 'karyawans.id', 'status.karyawan_id')->whereMonth('berakhir_kontrak', Carbon::now()->month);})->make(true);
+                    $data = Karyawan::with('status', 'data');
+                    return Datatables::of($data)->addIndexColumn()->filter(function ($query) use ($request){(!empty($request->get('bulan'))) ? $query->whereMonth('berakhir_kontrak', $request->get('bulan')) : $query->whereMonth('berakhir_kontrak', Carbon::now()->month);})->make(true);
                 case 'intake':
-                    $data = Karyawan::select('*');
-                    return Datatables::of($data)->addIndexColumn()->filter(function ($query) use ($request){(!empty($request->get('bulan'))) ? $query->join('status', 'karyawans.id', 'status.karyawan_id')->whereMonth('berakhir_kontrak', $request->get('bulan'))->where('departemen', 'intake') : $query->join('status', 'karyawans.id', 'status.karyawan_id')->whereMonth('berakhir_kontrak', Carbon::now()->month)->where('departemen', 'intake');})->make(true);
+                    $data = Karyawan::with('status', 'data');
+                    return Datatables::of($data)->addIndexColumn()->filter(function ($query) use ($request){(!empty($request->get('bulan'))) ? $query->whereMonth('berakhir_kontrak', $request->get('bulan'))->where('departemen', 'intake') : $query->whereMonth('berakhir_kontrak', Carbon::now()->month)->where('departemen', 'intake');})->make(true);
                 case 'warehouse':
-                    $data = Karyawan::select('*');
-                    return Datatables::of($data)->addIndexColumn()->filter(function ($query) use ($request){(!empty($request->get('bulan'))) ? $query->join('status', 'karyawans.id', 'status.karyawan_id')->whereMonth('berakhir_kontrak', $request->get('bulan'))->where('departemen', 'warehousing') : $query->join('status', 'karyawans.id', 'status.karyawan_id')->whereMonth('berakhir_kontrak', Carbon::now()->month)->where('departemen', 'warehousing');})->make(true);
+                    $data = Karyawan::with('status', 'data');
+                    return Datatables::of($data)->addIndexColumn()->filter(function ($query) use ($request){(!empty($request->get('bulan'))) ? $query->whereMonth('berakhir_kontrak', $request->get('bulan'))->where('departemen', 'warehousing') : $query->whereMonth('berakhir_kontrak', Carbon::now()->month)->where('departemen', 'warehousing');})->make(true);
                 case 'produksi':
-                    $data = Karyawan::select('*');
-                    return Datatables::of($data)->addIndexColumn()->filter(function ($query) use ($request){(!empty($request->get('bulan'))) ? $query->join('status', 'karyawans.id', 'status.karyawan_id')->whereMonth('berakhir_kontrak', $request->get('bulan'))->whereIn('departemen', ['hand add', 'produksi']) : $query->join('status', 'karyawans.id', 'status.karyawan_id')->whereMonth('berakhir_kontrak', Carbon::now()->month)->whereIn('departemen', ['hand add', 'produksi']);})->make(true);
+                    $data = Karyawan::with('status', 'data');
+                    return Datatables::of($data)->addIndexColumn()->filter(function ($query) use ($request){(!empty($request->get('bulan'))) ? $query->whereMonth('berakhir_kontrak', $request->get('bulan'))->whereIn('departemen', ['hand add', 'produksi']) : $query->whereMonth('berakhir_kontrak', Carbon::now()->month)->whereIn('departemen', ['hand add', 'produksi']);})->make(true);
                 case 'ga':
-                    $data = Karyawan::select('*');
-                    return Datatables::of($data)->addIndexColumn()->filter(function ($query) use ($request){(!empty($request->get('bulan'))) ? $query->join('status', 'karyawans.id', 'status.karyawan_id')->whereMonth('berakhir_kontrak', $request->get('bulan'))->where('departemen', 'ga') : $query->join('status', 'karyawans.id', 'status.karyawan_id')->whereMonth('berakhir_kontrak', Carbon::now()->month)->where('departemen', 'ga');})->make(true);
+                    $data = Karyawan::with('status', 'data');
+                    return Datatables::of($data)->addIndexColumn()->filter(function ($query) use ($request){(!empty($request->get('bulan'))) ? $query->whereMonth('berakhir_kontrak', $request->get('bulan'))->where('departemen', 'ga') : $query->whereMonth('berakhir_kontrak', Carbon::now()->month)->where('departemen', 'ga');})->make(true);
                 case 'lab':
-                    $data = Karyawan::select('*');
-                    return Datatables::of($data)->addIndexColumn()->filter(function ($query) use ($request){(!empty($request->get('bulan'))) ? $query->join('status', 'karyawans.id', 'status.karyawan_id')->whereMonth('berakhir_kontrak', $request->get('bulan'))->where('departemen', 'lab') : $query->join('status', 'karyawans.id', 'status.karyawan_id')->whereMonth('berakhir_kontrak', Carbon::now()->month)->where('departemen', 'lab');})->make(true);
+                    $data = Karyawan::with('status', 'data');
+                    return Datatables::of($data)->addIndexColumn()->filter(function ($query) use ($request){(!empty($request->get('bulan'))) ? $query->whereMonth('berakhir_kontrak', $request->get('bulan'))->where('departemen', 'lab') : $query->whereMonth('berakhir_kontrak', Carbon::now()->month)->where('departemen', 'lab');})->make(true);
                 case 'truck':
-                    $data = Karyawan::select('*');
-                    return Datatables::of($data)->addIndexColumn()->filter(function ($query) use ($request){(!empty($request->get('bulan'))) ? $query->join('status', 'karyawans.id', 'status.karyawan_id')->whereMonth('berakhir_kontrak', $request->get('bulan'))->where('departemen', 'truck scale') : $query->join('status', 'karyawans.id', 'status.karyawan_id')->whereMonth('berakhir_kontrak', Carbon::now()->month)->where('departemen', 'truck scale');})->make(true);
+                    $data = Karyawan::with('status', 'data');
+                    return Datatables::of($data)->addIndexColumn()->filter(function ($query) use ($request){(!empty($request->get('bulan'))) ? $query->whereMonth('berakhir_kontrak', $request->get('bulan'))->where('departemen', 'truck scale') : $query->whereMonth('berakhir_kontrak', Carbon::now()->month)->where('departemen', 'truck scale');})->make(true);
                 case 'premix':
-                    $data = Karyawan::select('*');
-                    return Datatables::of($data)->addIndexColumn()->filter(function ($query) use ($request){(!empty($request->get('bulan'))) ? $query->join('status', 'karyawans.id', 'status.karyawan_id')->whereMonth('berakhir_kontrak', $request->get('bulan'))->where('departemen', 'premix') : $query->join('status', 'karyawans.id', 'status.karyawan_id')->whereMonth('berakhir_kontrak', Carbon::now()->month)->where('departemen', 'premix');})->make(true);
+                    $data = Karyawan::with('status', 'data');
+                    return Datatables::of($data)->addIndexColumn()->filter(function ($query) use ($request){(!empty($request->get('bulan'))) ? $query->whereMonth('berakhir_kontrak', $request->get('bulan'))->where('departemen', 'premix') : $query->whereMonth('berakhir_kontrak', Carbon::now()->month)->where('departemen', 'premix');})->make(true);
                 case 'maintenance':
-                    $data = Karyawan::select('*');
-                    return Datatables::of($data)->addIndexColumn()->filter(function ($query) use ($request){(!empty($request->get('bulan'))) ? $query->join('status', 'karyawans.id', 'status.karyawan_id')->whereMonth('berakhir_kontrak', $request->get('bulan'))->where('departemen', 'maintenance') : $query->join('status', 'karyawans.id', 'status.karyawan_id')->whereMonth('berakhir_kontrak', Carbon::now()->month)->where('departemen', 'maintenance');})->make(true);
+                    $data = Karyawan::with('status', 'data');
+                    return Datatables::of($data)->addIndexColumn()->filter(function ($query) use ($request){(!empty($request->get('bulan'))) ? $query->whereMonth('berakhir_kontrak', $request->get('bulan'))->where('departemen', 'maintenance') : $query->whereMonth('berakhir_kontrak', Carbon::now()->month)->where('departemen', 'maintenance');})->make(true);
                 case 'kebersihan':
-                    $data = Karyawan::select('*');
-                    return Datatables::of($data)->addIndexColumn()->filter(function ($query) use ($request){(!empty($request->get('bulan'))) ? $query->join('status', 'karyawans.id', 'status.karyawan_id')->whereMonth('berakhir_kontrak', $request->get('bulan'))->where('departemen', 'kebersihan') : $query->join('status', 'karyawans.id', 'status.karyawan_id')->whereMonth('berakhir_kontrak', Carbon::now()->month)->where('departemen', 'kebersihan');})->make(true);
+                    $data = Karyawan::with('status', 'data');
+                    return Datatables::of($data)->addIndexColumn()->filter(function ($query) use ($request){(!empty($request->get('bulan'))) ? $query->whereMonth('berakhir_kontrak', $request->get('bulan'))->where('departemen', 'kebersihan') : $query->whereMonth('berakhir_kontrak', Carbon::now()->month)->where('departemen', 'kebersihan');})->make(true);
             }
         }
     }

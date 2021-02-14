@@ -42,7 +42,15 @@
             <!-- /.row -->
         </div>
     </div>
-
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
     <div class="card card-primary card-outline">
         <div class="card-header">
             <h3 class="card-title"><i class="fas fa-list"></i> Penilaian karyawan</h3>
@@ -51,38 +59,56 @@
             <form action="/penilaian/" method="post" class="form-horizontal">
             @csrf
             <input type="hidden" name="karyawan_id" value="{{ $karyawan->id }}">
-            <div class="form-group row">
-                <label class="col-sm-2 col-form-label">Usia</label>
-                <div class="col-sm-2">
-                    <span>{{ $karyawan->umur }} Tahun</span>
-                    <input type="hidden" value="{{ $karyawan->umur }}" id="usia">
-                    <input type="hidden" value="" id="nilaiUmur" name="nilaiUmur">
-                    <input type="hidden" name="usia_id" value="{{ $usia->id }}">
-                </div>
-            </div>
-            <div class="form-group row">
-                <label for="kehadiran" class="col-sm-2 col-form-label">Kehadiran</label>
-                <div class="col-sm-2">
-                    <input type="text" class="form-control  @error('kehadiran') is-invalid @enderror" id="kehadiran" name="kehadiran" placeholder="input">
-                    <input type="hidden" name="kehadiran_id" value="{{ $kehadiran->id }}">
-                    @error('kehadiran')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                </div>
-            </div>
-            <div class="form-group row">
-                <label for="pAndS" class="col-sm-2 col-form-label">Penghargaan dan Sanksi</label>
-                <div class="col-sm-2">
-                    <select class="form-control @error('pAndS') is-invalid @enderror" name="pAndS" id="pAndS">
-                        <option selected disabled>Pilih...</option>
-                        <option value="100">Penghargaan</option>
-                        <option value="75">None</option>
-                        <option value="50">SP1</option>
-                        <option value="25">SP2</option>
-                        <option value="0">SP3</option>
-                    </select>
-                    @error('pAndS')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                    <input type="hidden" name="pAndS_id" value="{{ $pAndS->id }}">
-                </div>
-            </div>
+            <input type="hidden" value="{{ $karyawan->umur }}" id="usia">
+            <input type="hidden" value="" id="nilaiUmur" name="nilaiUmur">
+            <input type="hidden" name="usia_id" value="{{ $usia->id }}">
+            <input type="hidden" name="kehadiran_id" value="{{ $kehadiran->id }}">
+            <input type="hidden" name="pAndS_id" value="{{ $pAndS->id }}">
+            <table class="table table-bordered">
+                 <thead>
+                    <tr class="text-center">
+                        <th>No</th>
+                        <th>Kriteria</th>
+                        <th>Bobot</th>
+                        <th>Penilaian</th>
+                    </tr>
+                </thead>
+                <tbody >
+                    <tr>
+                        <td class="text-center">1</td>
+                        <td><strong>Usia</strong></td>
+                        <td class="text-center">10</td>
+                        <td><span class="ml-3">{{ $karyawan->umur }} Tahun</span></td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">2</td>
+                        <td><strong>Kehadiran</strong></td>
+                        <td class="text-center">20</td>
+                        <td>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control  @error('kehadiran') is-invalid @enderror" id="kehadiran" name="kehadiran" placeholder="input">
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">3</td>
+                        <td><strong>Penghargaan Dan Sanksi</strong></td>
+                        <td class="text-center">10</td>
+                        <td>
+                            <div class="col-sm-4">
+                                <select class="form-control @error('pAndS') is-invalid @enderror" name="pAndS" id="pAndS">
+                                    <option selected disabled>Pilih...</option>
+                                    <option value="100">Penghargaan</option>
+                                    <option value="75">None</option>
+                                    <option value="50">SP1</option>
+                                    <option value="25">SP2</option>
+                                    <option value="0">SP3</option>
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
         <div class="card-footer">
             <button type="submit" class="btn btn-success">Submit</button>
@@ -97,7 +123,6 @@
 const usia = document.getElementById('usia').value;
 const umur = parseInt(usia);
 const nilaiUmur = document.getElementById('nilaiUmur');
-console.log(usia)
 if(umur >= 18 && umur <= 23){
     nilaiUmur.value = 100
 }else if(umur >= 24 && umur <= 27){
@@ -109,6 +134,27 @@ if(umur >= 18 && umur <= 23){
 }else if(umur > 40){
     nilaiUmur.value = 0
 }
+
+// Fungsi untuk restrict input angka only dll.
+function setInputFilter(textbox, inputFilter) {
+    ["input", "keydown", "keyup", "mousedown", "mouseup", "select", "contextmenu", "drop"].forEach(function(event) {
+        textbox.addEventListener(event, function() {
+            if (inputFilter(this.value)) {
+                this.oldValue = this.value;
+                this.oldSelectionStart = this.selectionStart;
+                this.oldSelectionEnd = this.selectionEnd;
+            } else if (this.hasOwnProperty("oldValue")) {
+                this.value = this.oldValue;
+                this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
+            } else {
+                this.value = "";
+            }
+        });
+    });
+}
+
+setInputFilter(document.getElementById("kehadiran"), function(value) {return /^-?\d*$/.test(value)});
+
 </script>
 @endpush
 
@@ -176,8 +222,12 @@ if(umur >= 18 && umur <= 23){
             <table class="table table-bordered">
                 <thead>
                     <tr class="text-center">
-                        <th>No</th>
-                        <th>Komponen Nilai</th>
+                        <th rowspan="2" style="vertical-align : middle">No</th>
+                        <th rowspan="2" style="vertical-align : middle">Kriteria</th>
+                        <th rowspan="2" style="vertical-align : middle">Bobot</th>
+                        <th colspan="5">Jenis Penilaian</th>
+                    </tr>
+                    <tr>
                         <th>Sangat Baik</th>
                         <th>Baik</th>
                         <th>Cukup</th>
@@ -189,6 +239,7 @@ if(umur >= 18 && umur <= 23){
                     <tr class="text-center">
                         <td>1</td>
                         <td style="text-align: left">Motivasi Kerja</td>
+                        <td>15</td>
                         <td><input type="radio" name="motivasi" value="100"></td>
                         <td><input type="radio" name="motivasi" value="75"></td>
                         <td><input type="radio" name="motivasi" value="50"></td>
@@ -198,6 +249,7 @@ if(umur >= 18 && umur <= 23){
                     <tr class="text-center">
                         <td>2</td>
                         <td style="text-align: left">Komunikasi dan Tanggung jawab</td>
+                        <td>15</td>
                         <td><input type="radio" name="komunikasi" value="100"></td>
                         <td><input type="radio" name="komunikasi" value="75"></td>
                         <td><input type="radio" name="komunikasi" value="50"></td>
@@ -207,6 +259,7 @@ if(umur >= 18 && umur <= 23){
                     <tr class="text-center">
                         <td>3</td>
                         <td style="text-align: left">Penguasaan pekerjaan</td>
+                        <td>30</td>
                         <td><input type="radio" name="penguasaan" value="100"></td>
                         <td><input type="radio" name="penguasaan" value="75"></td>
                         <td><input type="radio" name="penguasaan" value="50"></td>

@@ -9,7 +9,6 @@
             {{ session('status') }}
         </div>
     @endif
-
     {{-- Alter Overdue! --}}
     @role('admin')
     @if(isset($statusAdmin[0]))
@@ -312,15 +311,6 @@
             <div class="row mt-1 ml-1">
                 <span class="badge badge-pill badge-danger">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><i>&nbsp;&nbsp;&nbsp;Belum Melakukan Penginputan Nilai 14 hari sebelum kontrak habis</i>
             </div>
-            @role('admin')
-            <div class="row mt-1 ml-1">
-                <span class="badge badge-pill" style="background-color: #ffc107">History</span><i>&nbsp;&nbsp;&nbsp;*History bisa diakses setelah kepala bagian melakukan penilaian</i>
-            </div>
-            @else
-            <div class="row mt-1 ml-1">
-                <span class="badge badge-pill" style="background-color: #ffc107">History</span><i>&nbsp;&nbsp;&nbsp;*History bisa diakses setelah HRD melakukan penilaian</i>
-            </div>
-            @endrole
         </div>
     </div>
 </div>
@@ -336,7 +326,6 @@ $('#filterBulan option').map(function(n){
     n == tgl.getMonth() && $('.bulan').text($(this).text());
     n > tgl.getMonth() && $(this).addClass("d-none");
 });
-
     $(function () {
         var table = $('#infoKarya').DataTable({
             responsive:true,
@@ -358,7 +347,7 @@ $('#filterBulan option').map(function(n){
                 }}, 
                 {data: 'departemen', name: 'departemen'},
                 {data: 'berakhir_kontrak', name: 'berakhir_kontrak'},
-                {data: 'status_admin', name: 'status', 
+                {data: 'status.status_admin', name: 'status', 
                     "render" : function (nTd, sData, oData, iRow, iCol) {
                         const nowDate = new Date().toJSON().slice(0,10);
                         const diffDates = (startDate, endDate) => {
@@ -373,10 +362,10 @@ $('#filterBulan option').map(function(n){
 
                             return dayCount
                         }
-                        if(oData.status_admin == 0){
+                        if(oData.status.status_admin == 0){
                             if(diffDates(nowDate, oData.berakhir_kontrak) <= 14) return `<span class="badge badge-pill badge-danger">Overdue!</span><span class="badge badge-pill badge-warning">${diffDates(nowDate, oData.berakhir_kontrak)} Hari Lagi!</span>`
                             return `<span class="badge badge-pill badge-warning">Belum Nilai!</span><span class="badge badge-pill badge-info">${diffDates(nowDate, oData.berakhir_kontrak)} Hari Lagi</span>`
-                        }else if(oData.status_admin == 1){
+                        }else if(oData.status.status_admin == 1){
                             return `<span class="badge badge-pill badge-success">Sudah Dinilai</span>`
                         }
                 }},
@@ -384,26 +373,58 @@ $('#filterBulan option').map(function(n){
                     data: 'action', 
                     name: 'action', 
                     "render" : function (nTd, sData, oData, iRow, iCol){
-                        if(oData.status_admin == 0) {
+                        const tglData = JSON.stringify(oData.data.map(e=>e.created_at)).slice(8,9);
+                        const tglNow = tgl.toJSON().slice(6,7);
+                        if(oData.status.status_admin == 0) {
                             return "<a href='/penilaian/"+oData.id+"/input' class='btn btn-info'>Nilai</a>";
-                        }else if(oData.status_kepbag == 1){
-                            return '<a href="/penilaian/'+oData.id+'/nilai/'+$('#filterBulan').val()+'" class="btn btn-warning" >History</a>';
-                        }else if(oData.status_kepbag == 0){
-                            return '<a href="javascript:void(0)" class="btn btn-warning" >History</a>';
+                        }else if(oData.status.status_kepbag == 1){
+                            if(tglData < tglNow){
+                                return '<a href="/penilaian/'+oData.id+'/nilai/'+$('#filterBulan').val()+'" class="btn btn-warning" >History</a>';
+                            }else if(tglData == tglNow){
+                                return '<div class="btn-group" role="group">'+
+                                       '<a href="/penilaian/'+oData.id+'/nilai/'+$('#filterBulan').val()+'" class="btn btn-success" title="Lihat Nilai"><i class="fas fa-eye"></i></a>'+
+                                       `<a href="/penilaian/${oData.id}/edit" class="btn btn-info"><i class="fas fa-edit"></i></a>`+
+                                       '<form method="post" action="penilaian/'+oData.id+'">'+
+                                       `<input type="hidden" name="_token" value="{{ csrf_token() }}">`+
+                                       `<input type="hidden" name="_method" value="delete">`+
+                                       `<input type="hidden" name="pertamaId" value="6">`+
+                                       `<input type="hidden" name="keduaId" value="1">`+
+                                       `<input type="hidden" name="ketigaId" value="5">`+
+                                       `<input type="hidden" name="status" value="status_admin">`+
+                                       `<button type="submit" class="btn btn-danger hapuss"><span class="fas fa-trash"></span></button>`+
+                                       '</form>'+
+                                       '</div>';
+                            }
+                        }else if(oData.status.status_kepbag == 0){
+                            if(tglData < tglNow){
+                                return '<a href="/penilaian/'+oData.id+'/nilai/'+$('#filterBulan').val()+'" class="btn btn-warning" >History</a>';
+                            }else if(tglData == tglNow){
+                                return '<div class="btn-group" role="group">'+
+                                       '<a href="/penilaian/'+oData.id+'/nilai/'+$('#filterBulan').val()+'" class="btn btn-success" title="Lihat Nilai"><i class="fas fa-eye"></i></a>'+
+                                       `<a href="/penilaian/${oData.id}/edit" class="btn bg-navy"><i class="fas fa-edit"></i></a>`+
+                                       '<form method="post" action="penilaian/'+oData.id+'">'+
+                                       `<input type="hidden" name="_token" value="{{ csrf_token() }}">`+
+                                       `<input type="hidden" name="_method" value="delete">`+
+                                       `<input type="hidden" name="pertamaId" value="6">`+
+                                       `<input type="hidden" name="keduaId" value="1">`+
+                                       `<input type="hidden" name="ketigaId" value="5">`+
+                                       `<input type="hidden" name="status" value="status_admin">`+
+                                       `<button type="submit" class="btn btn-danger hapuss"><i class="fas fa-trash"></i></button>`+
+                                       '</form>'+
+                                       '</div>';
+                            }
                         }
                     },
                     orderable: true, 
-                    searchable: true
+                    searchable: true,
                 },
             ]
         });
-        
-        
         $('#filterBulan').change(function(){
             table.draw();
             $('.bulan').text($(this).children("option").filter(":selected").text());
         });
-      
+        $('#infoKarya tbody').on('click', '.hapuss', function(){return confirm('Yakin Ingin Menghapus?') ? true : false;});
     });
 
     setTimeout(function() {
@@ -441,7 +462,7 @@ $('#filterBulan option').map(function(n){
                 }},
                 {data: 'departemen', name: 'departemen'},   
                 {data: 'berakhir_kontrak', name: 'berakhir_kontrak'},
-                {data: 'status_kepbag', name: 'status_kepbag', 
+                {data: 'status.status_kepbag', name: 'status_kepbag', 
                     "render" : function (nTd, sData, oData, iRow, iCol) {
                         const nowDate = new Date().toJSON().slice(0,10);
                         const diffDates = (startDate, endDate) => {
@@ -456,10 +477,10 @@ $('#filterBulan option').map(function(n){
 
                             return dayCount
                         }
-                        if(oData.status_kepbag == 0){
+                        if(oData.status.status_kepbag == 0){
                             if(diffDates(nowDate, oData.berakhir_kontrak) <= 14) return `<span class="badge badge-pill badge-danger">Overdue!</span><span class="badge badge-pill badge-warning">${diffDates(nowDate, oData.berakhir_kontrak)} Hari Lagi!</span>`
                             return `<span class="badge badge-pill badge-warning">Belum Nilai!</span><span class="badge badge-pill badge-info">${diffDates(nowDate, oData.berakhir_kontrak)} Hari Lagi</span>`
-                        }else if(oData.status_kepbag == 1){
+                        }else if(oData.status.status_kepbag == 1){
                             return `<span class="badge badge-pill badge-success">Sudah Dinilai</span>`
                         }
                 }},
@@ -467,7 +488,7 @@ $('#filterBulan option').map(function(n){
                     data: 'action', 
                     name: 'action', 
                     "render" : function (nTd, sData, oData, iRow, iCol){
-                        if(oData.status_kepbag == 0) {
+                        if(oData.status.status_kepbag == 0) {
                             return "<a href='/penilaian/"+oData.id+"/input' class='btn btn-info'>Nilai</a>";
                         }else if(oData.status_admin == 1){
                             return '<a href="/penilaian/'+oData.id+'/nilai/'+$('#filterBulan').val()+'" class="btn btn-warning">History</a>';
@@ -528,7 +549,7 @@ $('#filterBulan option').map(function(n){
                 }},
                 {data: 'departemen', name: 'departemen'},   
                 {data: 'berakhir_kontrak', name: 'berakhir_kontrak'},
-                {data: 'status_kepbag', name: 'status_kepbag', 
+                {data: 'status.status_kepbag', name: 'status_kepbag', 
                     "render" : function (nTd, sData, oData, iRow, iCol) {
                         const nowDate = new Date().toJSON().slice(0,10);
                         const diffDates = (startDate, endDate) => {
@@ -543,10 +564,10 @@ $('#filterBulan option').map(function(n){
 
                             return dayCount
                         }
-                        if(oData.status_kepbag == 0){
+                        if(oData.status.status_kepbag == 0){
                             if(diffDates(nowDate, oData.berakhir_kontrak) <= 14) return `<span class="badge badge-pill badge-danger">Overdue!</span><span class="badge badge-pill badge-warning">${diffDates(nowDate, oData.berakhir_kontrak)} Hari Lagi!</span>`
                             return `<span class="badge badge-pill badge-warning">Belum Nilai!</span><span class="badge badge-pill badge-info">${diffDates(nowDate, oData.berakhir_kontrak)} Hari Lagi</span>`
-                        }else if(oData.status_kepbag == 1){
+                        }else if(oData.status.status_kepbag == 1){
                             return `<span class="badge badge-pill badge-success">Sudah Dinilai</span>`
                         }
                 }},
@@ -554,12 +575,46 @@ $('#filterBulan option').map(function(n){
                     data: 'action', 
                     name: 'action', 
                     "render" : function (nTd, sData, oData, iRow, iCol){
-                        if(oData.status_kepbag == 0) {
+                        const tglData = JSON.stringify(oData.data.map(e=>e.created_at)).slice(8,9);
+                        const tglNow = tgl.toJSON().slice(6,7);
+                        if(oData.status.status_kepbag == 0) {
                             return "<a href='/penilaian/"+oData.id+"/input' class='btn btn-info'>Nilai</a>";
-                        }else if(oData.status_admin == 1){
-                            return '<a href="/penilaian/'+oData.id+'/nilai/'+$('#filterBulan').val()+'" class="btn btn-warning">History</a>';
-                        }else if(oData.status_admin == 0){
-                            return '<a href="javascript:void(0)" class="btn btn-warning" disabled>History</a>';
+                        }else if(oData.status.status_admin == 1){
+                            if(tglData < tglNow){
+                                return '<a href="/penilaian/'+oData.id+'/nilai/'+$('#filterBulan').val()+'" class="btn btn-warning" >History</a>';
+                            }else if(tglData == tglNow){
+                                return '<div class="btn-group" role="group">'+
+                                       '<a href="/penilaian/'+oData.id+'/nilai/'+$('#filterBulan').val()+'" class="btn btn-success" title="Lihat Nilai"><i class="fas fa-eye"></i></a>'+
+                                       `<a href="/penilaian/${oData.id}/edit" class="btn btn-info"><i class="fas fa-edit"></i></a>`+
+                                       '<form method="post" action="penilaian/'+oData.id+'">'+
+                                       `<input type="hidden" name="_token" value="{{ csrf_token() }}">`+
+                                       `<input type="hidden" name="_method" value="delete">`+
+                                       `<input type="hidden" name="pertamaId" value="2">`+
+                                       `<input type="hidden" name="keduaId" value="3">`+
+                                       `<input type="hidden" name="ketigaId" value="4">`+
+                                       `<input type="hidden" name="status" value="status_kepbag">`+
+                                       `<button type="submit" class="btn btn-danger hapuss"><span class="fas fa-trash"></span></button>`+
+                                       '</form>'+
+                                       '</div>';
+                            }
+                        }else if(oData.status.status_admin == 0){
+                            if(tglData < tglNow){
+                                return '<a href="/penilaian/'+oData.id+'/nilai/'+$('#filterBulan').val()+'" class="btn btn-warning" >History</a>';
+                            }else if(tglData == tglNow){
+                                return '<div class="btn-group" role="group">'+
+                                       '<a href="/penilaian/'+oData.id+'/nilai/'+$('#filterBulan').val()+'" class="btn btn-success" title="Lihat Nilai"><i class="fas fa-eye"></i></a>'+
+                                       `<a href="/penilaian/${oData.id}/edit" class="btn bg-navy"><i class="fas fa-edit"></i></a>`+
+                                       '<form method="post" action="penilaian/'+oData.id+'">'+
+                                       `<input type="hidden" name="_token" value="{{ csrf_token() }}">`+
+                                       `<input type="hidden" name="_method" value="delete">`+
+                                       `<input type="hidden" name="pertamaId" value="2">`+
+                                       `<input type="hidden" name="keduaId" value="3">`+
+                                       `<input type="hidden" name="ketigaId" value="4">`+
+                                       `<input type="hidden" name="status" value="status_kepbag">`+
+                                       `<button type="submit" class="btn btn-danger hapuss"><i class="fas fa-trash"></i></button>`+
+                                       '</form>'+
+                                       '</div>';
+                            }
                         }
                     },
                     orderable: true, 
@@ -572,6 +627,7 @@ $('#filterBulan option').map(function(n){
             table.draw();
             $('.bulan').text($(this).children("option").filter(":selected").text());
         });
+        $('#infoKarya tbody').on('click', '.hapuss', function(){return confirm('Yakin Ingin Menghapus?') ? true : false;});
       
     });
 
@@ -615,7 +671,7 @@ $('#filterBulan option').map(function(n){
                 }},
                 {data: 'departemen', name: 'departemen'},   
                 {data: 'berakhir_kontrak', name: 'berakhir_kontrak'},
-                {data: 'status_kepbag', name: 'status_kepbag', 
+                {data: 'status.status_kepbag', name: 'status_kepbag', 
                     "render" : function (nTd, sData, oData, iRow, iCol) {
                         const nowDate = new Date().toJSON().slice(0,10);
                         const diffDates = (startDate, endDate) => {
@@ -630,10 +686,10 @@ $('#filterBulan option').map(function(n){
 
                             return dayCount
                         }
-                        if(oData.status_kepbag == 0){
+                        if(oData.status.status_kepbag == 0){
                             if(diffDates(nowDate, oData.berakhir_kontrak) <= 14) return `<span class="badge badge-pill badge-danger">Overdue!</span><span class="badge badge-pill badge-warning">${diffDates(nowDate, oData.berakhir_kontrak)} Hari Lagi!</span>`
                             return `<span class="badge badge-pill badge-warning">Belum Nilai!</span><span class="badge badge-pill badge-info">${diffDates(nowDate, oData.berakhir_kontrak)} Hari Lagi</span>`
-                        }else if(oData.status_kepbag == 1){
+                        }else if(oData.status.status_kepbag == 1){
                             return `<span class="badge badge-pill badge-success">Sudah Dinilai</span>`
                         }
                 }},
@@ -641,12 +697,46 @@ $('#filterBulan option').map(function(n){
                     data: 'action', 
                     name: 'action', 
                     "render" : function (nTd, sData, oData, iRow, iCol){
-                        if(oData.status_kepbag == 0) {
+                        const tglData = JSON.stringify(oData.data.map(e=>e.created_at)).slice(8,9);
+                        const tglNow = tgl.toJSON().slice(6,7);
+                        if(oData.status.status_kepbag == 0) {
                             return "<a href='/penilaian/"+oData.id+"/input' class='btn btn-info'>Nilai</a>";
-                        }else if(oData.status_admin == 1){
-                            return '<a href="/penilaian/'+oData.id+'/nilai/'+$('#filterBulan').val()+'" class="btn btn-warning">History</a>';
-                        }else if(oData.status_admin == 0){
-                            return '<a href="javascript:void(0)" class="btn btn-warning" disabled>History</a>';
+                        }else if(oData.status.status_admin == 1){
+                            if(tglData < tglNow){
+                                return '<a href="/penilaian/'+oData.id+'/nilai/'+$('#filterBulan').val()+'" class="btn btn-warning" >History</a>';
+                            }else if(tglData == tglNow){
+                                return '<div class="btn-group" role="group">'+
+                                       '<a href="/penilaian/'+oData.id+'/nilai/'+$('#filterBulan').val()+'" class="btn btn-success" title="Lihat Nilai"><i class="fas fa-eye"></i></a>'+
+                                       `<a href="/penilaian/${oData.id}/edit" class="btn btn-info"><i class="fas fa-edit"></i></a>`+
+                                       '<form method="post" action="penilaian/'+oData.id+'">'+
+                                       `<input type="hidden" name="_token" value="{{ csrf_token() }}">`+
+                                       `<input type="hidden" name="_method" value="delete">`+
+                                       `<input type="hidden" name="pertamaId" value="2">`+
+                                       `<input type="hidden" name="keduaId" value="3">`+
+                                       `<input type="hidden" name="ketigaId" value="4">`+
+                                       `<input type="hidden" name="status" value="status_kepbag">`+
+                                       `<button type="submit" class="btn btn-danger hapuss"><span class="fas fa-trash"></span></button>`+
+                                       '</form>'+
+                                       '</div>';
+                            }
+                        }else if(oData.status.status_admin == 0){
+                            if(tglData < tglNow){
+                                return '<a href="/penilaian/'+oData.id+'/nilai/'+$('#filterBulan').val()+'" class="btn btn-warning" >History</a>';
+                            }else if(tglData == tglNow){
+                                return '<div class="btn-group" role="group">'+
+                                       '<a href="/penilaian/'+oData.id+'/nilai/'+$('#filterBulan').val()+'" class="btn btn-success" title="Lihat Nilai"><i class="fas fa-eye"></i></a>'+
+                                       `<a href="/penilaian/${oData.id}/edit" class="btn bg-navy"><i class="fas fa-edit"></i></a>`+
+                                       '<form method="post" action="penilaian/'+oData.id+'">'+
+                                       `<input type="hidden" name="_token" value="{{ csrf_token() }}">`+
+                                       `<input type="hidden" name="_method" value="delete">`+
+                                       `<input type="hidden" name="pertamaId" value="2">`+
+                                       `<input type="hidden" name="keduaId" value="3">`+
+                                       `<input type="hidden" name="ketigaId" value="4">`+
+                                       `<input type="hidden" name="status" value="status_kepbag">`+
+                                       `<button type="submit" class="btn btn-danger hapuss"><i class="fas fa-trash"></i></button>`+
+                                       '</form>'+
+                                       '</div>';
+                            }
                         }
                     },
                     orderable: true, 
@@ -660,6 +750,7 @@ $('#filterBulan option').map(function(n){
             table.draw();
             $('.bulan').text($(this).children("option").filter(":selected").text());
         });
+        $('#infoKarya tbody').on('click', '.hapuss', function(){return confirm('Yakin Ingin Menghapus?') ? true : false;});
     });
 
     setTimeout(function() {
@@ -702,7 +793,7 @@ $('#filterBulan option').map(function(n){
                 }},
                 {data: 'departemen', name: 'departemen'},   
                 {data: 'berakhir_kontrak', name: 'berakhir_kontrak'},
-                {data: 'status_kepbag', name: 'status_kepbag', 
+                {data: 'status.status_kepbag', name: 'status_kepbag', 
                     "render" : function (nTd, sData, oData, iRow, iCol) {
                         const nowDate = new Date().toJSON().slice(0,10);
                         const diffDates = (startDate, endDate) => {
@@ -717,10 +808,10 @@ $('#filterBulan option').map(function(n){
 
                             return dayCount
                         }
-                        if(oData.status_kepbag == 0){
+                        if(oData.status.status_kepbag == 0){
                             if(diffDates(nowDate, oData.berakhir_kontrak) <= 14) return `<span class="badge badge-pill badge-danger">Overdue!</span><span class="badge badge-pill badge-warning">${diffDates(nowDate, oData.berakhir_kontrak)} Hari Lagi!</span>`
                             return `<span class="badge badge-pill badge-warning">Belum Nilai!</span><span class="badge badge-pill badge-info">${diffDates(nowDate, oData.berakhir_kontrak)} Hari Lagi</span>`
-                        }else if(oData.status_kepbag == 1){
+                        }else if(oData.status.status_kepbag == 1){
                             return `<span class="badge badge-pill badge-success">Sudah Dinilai</span>`
                         }
                 }},
@@ -728,12 +819,46 @@ $('#filterBulan option').map(function(n){
                     data: 'action', 
                     name: 'action', 
                     "render" : function (nTd, sData, oData, iRow, iCol){
-                        if(oData.status_kepbag == 0) {
+                        const tglData = JSON.stringify(oData.data.map(e=>e.created_at)).slice(8,9);
+                        const tglNow = tgl.toJSON().slice(6,7);
+                        if(oData.status.status_kepbag == 0) {
                             return "<a href='/penilaian/"+oData.id+"/input' class='btn btn-info'>Nilai</a>";
-                        }else if(oData.status_admin == 1){
-                            return '<a href="/penilaian/'+oData.id+'/nilai/'+$('#filterBulan').val()+'" class="btn btn-warning">History</a>';
-                        }else if(oData.status_admin == 0){
-                            return '<a href="javascript:void(0)" class="btn btn-warning" disabled>History</a>';
+                        }else if(oData.status.status_admin == 1){
+                            if(tglData < tglNow){
+                                return '<a href="/penilaian/'+oData.id+'/nilai/'+$('#filterBulan').val()+'" class="btn btn-warning" >History</a>';
+                            }else if(tglData == tglNow){
+                                return '<div class="btn-group" role="group">'+
+                                       '<a href="/penilaian/'+oData.id+'/nilai/'+$('#filterBulan').val()+'" class="btn btn-success" title="Lihat Nilai"><i class="fas fa-eye"></i></a>'+
+                                       `<a href="/penilaian/${oData.id}/edit" class="btn btn-info"><i class="fas fa-edit"></i></a>`+
+                                       '<form method="post" action="penilaian/'+oData.id+'">'+
+                                       `<input type="hidden" name="_token" value="{{ csrf_token() }}">`+
+                                       `<input type="hidden" name="_method" value="delete">`+
+                                       `<input type="hidden" name="pertamaId" value="2">`+
+                                       `<input type="hidden" name="keduaId" value="3">`+
+                                       `<input type="hidden" name="ketigaId" value="4">`+
+                                       `<input type="hidden" name="status" value="status_kepbag">`+
+                                       `<button type="submit" class="btn btn-danger hapuss"><span class="fas fa-trash"></span></button>`+
+                                       '</form>'+
+                                       '</div>';
+                            }
+                        }else if(oData.status.status_admin == 0){
+                            if(tglData < tglNow){
+                                return '<a href="/penilaian/'+oData.id+'/nilai/'+$('#filterBulan').val()+'" class="btn btn-warning" >History</a>';
+                            }else if(tglData == tglNow){
+                                return '<div class="btn-group" role="group">'+
+                                       '<a href="/penilaian/'+oData.id+'/nilai/'+$('#filterBulan').val()+'" class="btn btn-success" title="Lihat Nilai"><i class="fas fa-eye"></i></a>'+
+                                       `<a href="/penilaian/${oData.id}/edit" class="btn bg-navy"><i class="fas fa-edit"></i></a>`+
+                                       '<form method="post" action="penilaian/'+oData.id+'">'+
+                                       `<input type="hidden" name="_token" value="{{ csrf_token() }}">`+
+                                       `<input type="hidden" name="_method" value="delete">`+
+                                       `<input type="hidden" name="pertamaId" value="2">`+
+                                       `<input type="hidden" name="keduaId" value="3">`+
+                                       `<input type="hidden" name="ketigaId" value="4">`+
+                                       `<input type="hidden" name="status" value="status_kepbag">`+
+                                       `<button type="submit" class="btn btn-danger hapuss"><i class="fas fa-trash"></i></button>`+
+                                       '</form>'+
+                                       '</div>';
+                            }
                         }
                     },
                     orderable: true, 
@@ -747,6 +872,7 @@ $('#filterBulan option').map(function(n){
             table.draw();
             $('.bulan').text($(this).children("option").filter(":selected").text());
         });
+        $('#infoKarya tbody').on('click', '.hapuss', function(){return confirm('Yakin Ingin Menghapus?') ? true : false;});
     });
 
     setTimeout(function() {
@@ -789,7 +915,7 @@ $('#filterBulan option').map(function(n){
                 }},
                 {data: 'departemen', name: 'departemen'},   
                 {data: 'berakhir_kontrak', name: 'berakhir_kontrak'},
-                {data: 'status_kepbag', name: 'status_kepbag', 
+                {data: 'status.status_kepbag', name: 'status_kepbag', 
                     "render" : function (nTd, sData, oData, iRow, iCol) {
                         const nowDate = new Date().toJSON().slice(0,10);
                         const diffDates = (startDate, endDate) => {
@@ -804,10 +930,10 @@ $('#filterBulan option').map(function(n){
 
                             return dayCount
                         }
-                        if(oData.status_kepbag == 0){
+                        if(oData.status.status_kepbag == 0){
                             if(diffDates(nowDate, oData.berakhir_kontrak) <= 14) return `<span class="badge badge-pill badge-danger">Overdue!</span><span class="badge badge-pill badge-warning">${diffDates(nowDate, oData.berakhir_kontrak)} Hari Lagi!</span>`
                             return `<span class="badge badge-pill badge-warning">Belum Nilai!</span><span class="badge badge-pill badge-info">${diffDates(nowDate, oData.berakhir_kontrak)} Hari Lagi</span>`
-                        }else if(oData.status_kepbag == 1){
+                        }else if(oData.status.status_kepbag == 1){
                             return `<span class="badge badge-pill badge-success">Sudah Dinilai</span>`
                         }
                 }},
@@ -815,12 +941,46 @@ $('#filterBulan option').map(function(n){
                     data: 'action', 
                     name: 'action', 
                     "render" : function (nTd, sData, oData, iRow, iCol){
-                        if(oData.status_kepbag == 0) {
+                        const tglData = JSON.stringify(oData.data.map(e=>e.created_at)).slice(8,9);
+                        const tglNow = tgl.toJSON().slice(6,7);
+                        if(oData.status.status_kepbag == 0) {
                             return "<a href='/penilaian/"+oData.id+"/input' class='btn btn-info'>Nilai</a>";
-                        }else if(oData.status_admin == 1){
-                            return '<a href="/penilaian/'+oData.id+'/nilai/'+$('#filterBulan').val()+'" class="btn btn-warning">History</a>';
-                        }else if(oData.status_admin == 0){
-                            return '<a href="javascript:void(0)" class="btn btn-warning" disabled>History</a>';
+                        }else if(oData.status.status_admin == 1){
+                            if(tglData < tglNow){
+                                return '<a href="/penilaian/'+oData.id+'/nilai/'+$('#filterBulan').val()+'" class="btn btn-warning" >History</a>';
+                            }else if(tglData == tglNow){
+                                return '<div class="btn-group" role="group">'+
+                                       '<a href="/penilaian/'+oData.id+'/nilai/'+$('#filterBulan').val()+'" class="btn btn-success" title="Lihat Nilai"><i class="fas fa-eye"></i></a>'+
+                                       `<a href="/penilaian/${oData.id}/edit" class="btn btn-info"><i class="fas fa-edit"></i></a>`+
+                                       '<form method="post" action="penilaian/'+oData.id+'">'+
+                                       `<input type="hidden" name="_token" value="{{ csrf_token() }}">`+
+                                       `<input type="hidden" name="_method" value="delete">`+
+                                       `<input type="hidden" name="pertamaId" value="2">`+
+                                       `<input type="hidden" name="keduaId" value="3">`+
+                                       `<input type="hidden" name="ketigaId" value="4">`+
+                                       `<input type="hidden" name="status" value="status_kepbag">`+
+                                       `<button type="submit" class="btn btn-danger hapuss"><span class="fas fa-trash"></span></button>`+
+                                       '</form>'+
+                                       '</div>';
+                            }
+                        }else if(oData.status.status_admin == 0){
+                            if(tglData < tglNow){
+                                return '<a href="/penilaian/'+oData.id+'/nilai/'+$('#filterBulan').val()+'" class="btn btn-warning" >History</a>';
+                            }else if(tglData == tglNow){
+                                return '<div class="btn-group" role="group">'+
+                                       '<a href="/penilaian/'+oData.id+'/nilai/'+$('#filterBulan').val()+'" class="btn btn-success" title="Lihat Nilai"><i class="fas fa-eye"></i></a>'+
+                                       `<a href="/penilaian/${oData.id}/edit" class="btn bg-navy"><i class="fas fa-edit"></i></a>`+
+                                       '<form method="post" action="penilaian/'+oData.id+'">'+
+                                       `<input type="hidden" name="_token" value="{{ csrf_token() }}">`+
+                                       `<input type="hidden" name="_method" value="delete">`+
+                                       `<input type="hidden" name="pertamaId" value="2">`+
+                                       `<input type="hidden" name="keduaId" value="3">`+
+                                       `<input type="hidden" name="ketigaId" value="4">`+
+                                       `<input type="hidden" name="status" value="status_kepbag">`+
+                                       `<button type="submit" class="btn btn-danger hapuss"><i class="fas fa-trash"></i></button>`+
+                                       '</form>'+
+                                       '</div>';
+                            }
                         }
                     },
                     orderable: true, 
@@ -834,6 +994,7 @@ $('#filterBulan option').map(function(n){
             table.draw();
             $('.bulan').text($(this).children("option").filter(":selected").text());
         });
+        $('#infoKarya tbody').on('click', '.hapuss', function(){return confirm('Yakin Ingin Menghapus?') ? true : false;});
     });
 
     setTimeout(function() {
@@ -876,7 +1037,7 @@ $('#filterBulan option').map(function(n){
                 }},
                 {data: 'departemen', name: 'departemen'},   
                 {data: 'berakhir_kontrak', name: 'berakhir_kontrak'},
-                {data: 'status_kepbag', name: 'status_kepbag', 
+                {data: 'status.status_kepbag', name: 'status_kepbag', 
                     "render" : function (nTd, sData, oData, iRow, iCol) {
                         const nowDate = new Date().toJSON().slice(0,10);
                         const diffDates = (startDate, endDate) => {
@@ -891,10 +1052,10 @@ $('#filterBulan option').map(function(n){
 
                             return dayCount
                         }
-                        if(oData.status_kepbag == 0){
+                        if(oData.status.status_kepbag == 0){
                             if(diffDates(nowDate, oData.berakhir_kontrak) <= 14) return `<span class="badge badge-pill badge-danger">Overdue!</span><span class="badge badge-pill badge-warning">${diffDates(nowDate, oData.berakhir_kontrak)} Hari Lagi!</span>`
                             return `<span class="badge badge-pill badge-warning">Belum Nilai!</span><span class="badge badge-pill badge-info">${diffDates(nowDate, oData.berakhir_kontrak)} Hari Lagi</span>`
-                        }else if(oData.status_kepbag == 1){
+                        }else if(oData.status.status_kepbag == 1){
                             return `<span class="badge badge-pill badge-success">Sudah Dinilai</span>`
                         }
                 }},
@@ -902,12 +1063,46 @@ $('#filterBulan option').map(function(n){
                     data: 'action', 
                     name: 'action', 
                     "render" : function (nTd, sData, oData, iRow, iCol){
-                        if(oData.status_kepbag == 0) {
+                        const tglData = JSON.stringify(oData.data.map(e=>e.created_at)).slice(8,9);
+                        const tglNow = tgl.toJSON().slice(6,7);
+                        if(oData.status.status_kepbag == 0) {
                             return "<a href='/penilaian/"+oData.id+"/input' class='btn btn-info'>Nilai</a>";
-                        }else if(oData.status_admin == 1){
-                            return '<a href="/penilaian/'+oData.id+'/nilai/'+$('#filterBulan').val()+'" class="btn btn-warning">History</a>';
-                        }else if(oData.status_admin == 0){
-                            return '<a href="javascript:void(0)" class="btn btn-warning" disabled>History</a>';
+                        }else if(oData.status.status_admin == 1){
+                            if(tglData < tglNow){
+                                return '<a href="/penilaian/'+oData.id+'/nilai/'+$('#filterBulan').val()+'" class="btn btn-warning" >History</a>';
+                            }else if(tglData == tglNow){
+                                return '<div class="btn-group" role="group">'+
+                                       '<a href="/penilaian/'+oData.id+'/nilai/'+$('#filterBulan').val()+'" class="btn btn-success" title="Lihat Nilai"><i class="fas fa-eye"></i></a>'+
+                                       `<a href="/penilaian/${oData.id}/edit" class="btn btn-info"><i class="fas fa-edit"></i></a>`+
+                                       '<form method="post" action="penilaian/'+oData.id+'">'+
+                                       `<input type="hidden" name="_token" value="{{ csrf_token() }}">`+
+                                       `<input type="hidden" name="_method" value="delete">`+
+                                       `<input type="hidden" name="pertamaId" value="2">`+
+                                       `<input type="hidden" name="keduaId" value="3">`+
+                                       `<input type="hidden" name="ketigaId" value="4">`+
+                                       `<input type="hidden" name="status" value="status_kepbag">`+
+                                       `<button type="submit" class="btn btn-danger hapuss"><span class="fas fa-trash"></span></button>`+
+                                       '</form>'+
+                                       '</div>';
+                            }
+                        }else if(oData.status.status_admin == 0){
+                            if(tglData < tglNow){
+                                return '<a href="/penilaian/'+oData.id+'/nilai/'+$('#filterBulan').val()+'" class="btn btn-warning" >History</a>';
+                            }else if(tglData == tglNow){
+                                return '<div class="btn-group" role="group">'+
+                                       '<a href="/penilaian/'+oData.id+'/nilai/'+$('#filterBulan').val()+'" class="btn btn-success" title="Lihat Nilai"><i class="fas fa-eye"></i></a>'+
+                                       `<a href="/penilaian/${oData.id}/edit" class="btn bg-navy"><i class="fas fa-edit"></i></a>`+
+                                       '<form method="post" action="penilaian/'+oData.id+'">'+
+                                       `<input type="hidden" name="_token" value="{{ csrf_token() }}">`+
+                                       `<input type="hidden" name="_method" value="delete">`+
+                                       `<input type="hidden" name="pertamaId" value="2">`+
+                                       `<input type="hidden" name="keduaId" value="3">`+
+                                       `<input type="hidden" name="ketigaId" value="4">`+
+                                       `<input type="hidden" name="status" value="status_kepbag">`+
+                                       `<button type="submit" class="btn btn-danger hapuss"><i class="fas fa-trash"></i></button>`+
+                                       '</form>'+
+                                       '</div>';
+                            }
                         }
                     },
                     orderable: true, 
@@ -921,6 +1116,7 @@ $('#filterBulan option').map(function(n){
             table.draw();
             $('.bulan').text($(this).children("option").filter(":selected").text());
         });
+        $('#infoKarya tbody').on('click', '.hapuss', function(){return confirm('Yakin Ingin Menghapus?') ? true : false;});
     });
 
     setTimeout(function() {
@@ -963,7 +1159,7 @@ $('#filterBulan option').map(function(n){
                 }},
                 {data: 'departemen', name: 'departemen'},   
                 {data: 'berakhir_kontrak', name: 'berakhir_kontrak'},
-                {data: 'status_kepbag', name: 'status_kepbag', 
+                {data: 'status.status_kepbag', name: 'status_kepbag', 
                     "render" : function (nTd, sData, oData, iRow, iCol) {
                         const nowDate = new Date().toJSON().slice(0,10);
                         const diffDates = (startDate, endDate) => {
@@ -978,10 +1174,10 @@ $('#filterBulan option').map(function(n){
 
                             return dayCount
                         }
-                        if(oData.status_kepbag == 0){
+                        if(oData.status.status_kepbag == 0){
                             if(diffDates(nowDate, oData.berakhir_kontrak) <= 14) return `<span class="badge badge-pill badge-danger">Overdue!</span><span class="badge badge-pill badge-warning">${diffDates(nowDate, oData.berakhir_kontrak)} Hari Lagi!</span>`
                             return `<span class="badge badge-pill badge-warning">Belum Nilai!</span><span class="badge badge-pill badge-info">${diffDates(nowDate, oData.berakhir_kontrak)} Hari Lagi</span>`
-                        }else if(oData.status_kepbag == 1){
+                        }else if(oData.status.status_kepbag == 1){
                             return `<span class="badge badge-pill badge-success">Sudah Dinilai</span>`
                         }
                 }},
@@ -989,12 +1185,46 @@ $('#filterBulan option').map(function(n){
                     data: 'action', 
                     name: 'action', 
                     "render" : function (nTd, sData, oData, iRow, iCol){
-                        if(oData.status_kepbag == 0) {
+                        const tglData = JSON.stringify(oData.data.map(e=>e.created_at)).slice(8,9);
+                        const tglNow = tgl.toJSON().slice(6,7);
+                        if(oData.status.status_kepbag == 0) {
                             return "<a href='/penilaian/"+oData.id+"/input' class='btn btn-info'>Nilai</a>";
-                        }else if(oData.status_admin == 1){
-                            return '<a href="/penilaian/'+oData.id+'/nilai/'+$('#filterBulan').val()+'" class="btn btn-warning">History</a>';
-                        }else if(oData.status_admin == 0){
-                            return '<a href="javascript:void(0)" class="btn btn-warning" disabled>History</a>';
+                        }else if(oData.status.status_admin == 1){
+                            if(tglData < tglNow){
+                                return '<a href="/penilaian/'+oData.id+'/nilai/'+$('#filterBulan').val()+'" class="btn btn-warning" >History</a>';
+                            }else if(tglData == tglNow){
+                                return '<div class="btn-group" role="group">'+
+                                       '<a href="/penilaian/'+oData.id+'/nilai/'+$('#filterBulan').val()+'" class="btn btn-success" title="Lihat Nilai"><i class="fas fa-eye"></i></a>'+
+                                       `<a href="/penilaian/${oData.id}/edit" class="btn btn-info"><i class="fas fa-edit"></i></a>`+
+                                       '<form method="post" action="penilaian/'+oData.id+'">'+
+                                       `<input type="hidden" name="_token" value="{{ csrf_token() }}">`+
+                                       `<input type="hidden" name="_method" value="delete">`+
+                                       `<input type="hidden" name="pertamaId" value="2">`+
+                                       `<input type="hidden" name="keduaId" value="3">`+
+                                       `<input type="hidden" name="ketigaId" value="4">`+
+                                       `<input type="hidden" name="status" value="status_kepbag">`+
+                                       `<button type="submit" class="btn btn-danger hapuss"><span class="fas fa-trash"></span></button>`+
+                                       '</form>'+
+                                       '</div>';
+                            }
+                        }else if(oData.status.status_admin == 0){
+                            if(tglData < tglNow){
+                                return '<a href="/penilaian/'+oData.id+'/nilai/'+$('#filterBulan').val()+'" class="btn btn-warning" >History</a>';
+                            }else if(tglData == tglNow){
+                                return '<div class="btn-group" role="group">'+
+                                       '<a href="/penilaian/'+oData.id+'/nilai/'+$('#filterBulan').val()+'" class="btn btn-success" title="Lihat Nilai"><i class="fas fa-eye"></i></a>'+
+                                       `<a href="/penilaian/${oData.id}/edit" class="btn bg-navy"><i class="fas fa-edit"></i></a>`+
+                                       '<form method="post" action="penilaian/'+oData.id+'">'+
+                                       `<input type="hidden" name="_token" value="{{ csrf_token() }}">`+
+                                       `<input type="hidden" name="_method" value="delete">`+
+                                       `<input type="hidden" name="pertamaId" value="2">`+
+                                       `<input type="hidden" name="keduaId" value="3">`+
+                                       `<input type="hidden" name="ketigaId" value="4">`+
+                                       `<input type="hidden" name="status" value="status_kepbag">`+
+                                       `<button type="submit" class="btn btn-danger hapuss"><i class="fas fa-trash"></i></button>`+
+                                       '</form>'+
+                                       '</div>';
+                            }
                         }
                     },
                     orderable: true, 
@@ -1008,6 +1238,7 @@ $('#filterBulan option').map(function(n){
             table.draw();
             $('.bulan').text($(this).children("option").filter(":selected").text());
         });
+        $('#infoKarya tbody').on('click', '.hapuss', function(){return confirm('Yakin Ingin Menghapus?') ? true : false;});
     });
 
     setTimeout(function() {
@@ -1050,7 +1281,7 @@ $('#filterBulan option').map(function(n){
                 }},
                 {data: 'departemen', name: 'departemen'},   
                 {data: 'berakhir_kontrak', name: 'berakhir_kontrak'},
-                {data: 'status_kepbag', name: 'status_kepbag', 
+                {data: 'status.status_kepbag', name: 'status_kepbag', 
                     "render" : function (nTd, sData, oData, iRow, iCol) {
                         const nowDate = new Date().toJSON().slice(0,10);
                         const diffDates = (startDate, endDate) => {
@@ -1065,10 +1296,10 @@ $('#filterBulan option').map(function(n){
 
                             return dayCount
                         }
-                        if(oData.status_kepbag == 0){
+                        if(oData.status.status_kepbag == 0){
                             if(diffDates(nowDate, oData.berakhir_kontrak) <= 14) return `<span class="badge badge-pill badge-danger">Overdue!</span><span class="badge badge-pill badge-warning">${diffDates(nowDate, oData.berakhir_kontrak)} Hari Lagi!</span>`
                             return `<span class="badge badge-pill badge-warning">Belum Nilai!</span><span class="badge badge-pill badge-info">${diffDates(nowDate, oData.berakhir_kontrak)} Hari Lagi</span>`
-                        }else if(oData.status_kepbag == 1){
+                        }else if(oData.status.status_kepbag == 1){
                             return `<span class="badge badge-pill badge-success">Sudah Dinilai</span>`
                         }
                 }},
@@ -1076,12 +1307,46 @@ $('#filterBulan option').map(function(n){
                     data: 'action', 
                     name: 'action', 
                     "render" : function (nTd, sData, oData, iRow, iCol){
-                        if(oData.status_kepbag == 0) {
+                        const tglData = JSON.stringify(oData.data.map(e=>e.created_at)).slice(8,9);
+                        const tglNow = tgl.toJSON().slice(6,7);
+                        if(oData.status.status_kepbag == 0) {
                             return "<a href='/penilaian/"+oData.id+"/input' class='btn btn-info'>Nilai</a>";
-                        }else if(oData.status_admin == 1){
-                            return '<a href="/penilaian/'+oData.id+'/nilai/'+$('#filterBulan').val()+'" class="btn btn-warning">History</a>';
-                        }else if(oData.status_admin == 0){
-                            return '<a href="javascript:void(0)" class="btn btn-warning" disabled>History</a>';
+                        }else if(oData.status.status_admin == 1){
+                            if(tglData < tglNow){
+                                return '<a href="/penilaian/'+oData.id+'/nilai/'+$('#filterBulan').val()+'" class="btn btn-warning" >History</a>';
+                            }else if(tglData == tglNow){
+                                return '<div class="btn-group" role="group">'+
+                                       '<a href="/penilaian/'+oData.id+'/nilai/'+$('#filterBulan').val()+'" class="btn btn-success" title="Lihat Nilai"><i class="fas fa-eye"></i></a>'+
+                                       `<a href="/penilaian/${oData.id}/edit" class="btn btn-info"><i class="fas fa-edit"></i></a>`+
+                                       '<form method="post" action="penilaian/'+oData.id+'">'+
+                                       `<input type="hidden" name="_token" value="{{ csrf_token() }}">`+
+                                       `<input type="hidden" name="_method" value="delete">`+
+                                       `<input type="hidden" name="pertamaId" value="2">`+
+                                       `<input type="hidden" name="keduaId" value="3">`+
+                                       `<input type="hidden" name="ketigaId" value="4">`+
+                                       `<input type="hidden" name="status" value="status_kepbag">`+
+                                       `<button type="submit" class="btn btn-danger hapuss"><span class="fas fa-trash"></span></button>`+
+                                       '</form>'+
+                                       '</div>';
+                            }
+                        }else if(oData.status.status_admin == 0){
+                            if(tglData < tglNow){
+                                return '<a href="/penilaian/'+oData.id+'/nilai/'+$('#filterBulan').val()+'" class="btn btn-warning" >History</a>';
+                            }else if(tglData == tglNow){
+                                return '<div class="btn-group" role="group">'+
+                                       '<a href="/penilaian/'+oData.id+'/nilai/'+$('#filterBulan').val()+'" class="btn btn-success" title="Lihat Nilai"><i class="fas fa-eye"></i></a>'+
+                                       `<a href="/penilaian/${oData.id}/edit" class="btn bg-navy"><i class="fas fa-edit"></i></a>`+
+                                       '<form method="post" action="penilaian/'+oData.id+'">'+
+                                       `<input type="hidden" name="_token" value="{{ csrf_token() }}">`+
+                                       `<input type="hidden" name="_method" value="delete">`+
+                                       `<input type="hidden" name="pertamaId" value="2">`+
+                                       `<input type="hidden" name="keduaId" value="3">`+
+                                       `<input type="hidden" name="ketigaId" value="4">`+
+                                       `<input type="hidden" name="status" value="status_kepbag">`+
+                                       `<button type="submit" class="btn btn-danger hapuss"><i class="fas fa-trash"></i></button>`+
+                                       '</form>'+
+                                       '</div>';
+                            }
                         }
                     },
                     orderable: true, 
@@ -1095,6 +1360,7 @@ $('#filterBulan option').map(function(n){
             table.draw();
             $('.bulan').text($(this).children("option").filter(":selected").text());
         });
+        $('#infoKarya tbody').on('click', '.hapuss', function(){return confirm('Yakin Ingin Menghapus?') ? true : false;});
     });
 
     setTimeout(function() {
@@ -1137,7 +1403,7 @@ $('#filterBulan option').map(function(n){
                 }},
                 {data: 'departemen', name: 'departemen'},   
                 {data: 'berakhir_kontrak', name: 'berakhir_kontrak'},
-                {data: 'status_kepbag', name: 'status_kepbag', 
+                {data: 'status.status_kepbag', name: 'status_kepbag', 
                     "render" : function (nTd, sData, oData, iRow, iCol) {
                         const nowDate = new Date().toJSON().slice(0,10);
                         const diffDates = (startDate, endDate) => {
@@ -1152,10 +1418,10 @@ $('#filterBulan option').map(function(n){
 
                             return dayCount
                         }
-                        if(oData.status_kepbag == 0){
+                        if(oData.status.status_kepbag == 0){
                             if(diffDates(nowDate, oData.berakhir_kontrak) <= 14) return `<span class="badge badge-pill badge-danger">Overdue!</span><span class="badge badge-pill badge-warning">${diffDates(nowDate, oData.berakhir_kontrak)} Hari Lagi!</span>`
                             return `<span class="badge badge-pill badge-warning">Belum Nilai!</span><span class="badge badge-pill badge-info">${diffDates(nowDate, oData.berakhir_kontrak)} Hari Lagi</span>`
-                        }else if(oData.status_kepbag == 1){
+                        }else if(oData.status.status_kepbag == 1){
                             return `<span class="badge badge-pill badge-success">Sudah Dinilai</span>`
                         }
                 }},
@@ -1163,12 +1429,46 @@ $('#filterBulan option').map(function(n){
                     data: 'action', 
                     name: 'action', 
                     "render" : function (nTd, sData, oData, iRow, iCol){
-                        if(oData.status_kepbag == 0) {
+                        const tglData = JSON.stringify(oData.data.map(e=>e.created_at)).slice(8,9);
+                        const tglNow = tgl.toJSON().slice(6,7);
+                        if(oData.status.status_kepbag == 0) {
                             return "<a href='/penilaian/"+oData.id+"/input' class='btn btn-info'>Nilai</a>";
-                        }else if(oData.status_admin == 1){
-                            return '<a href="/penilaian/'+oData.id+'/nilai/'+$('#filterBulan').val()+'" class="btn btn-warning">History</a>';
-                        }else if(oData.status_admin == 0){
-                            return '<a href="javascript:void(0)" class="btn btn-warning" disabled>History</a>';
+                        }else if(oData.status.status_admin == 1){
+                            if(tglData < tglNow){
+                                return '<a href="/penilaian/'+oData.id+'/nilai/'+$('#filterBulan').val()+'" class="btn btn-warning" >History</a>';
+                            }else if(tglData == tglNow){
+                                return '<div class="btn-group" role="group">'+
+                                       '<a href="/penilaian/'+oData.id+'/nilai/'+$('#filterBulan').val()+'" class="btn btn-success" title="Lihat Nilai"><i class="fas fa-eye"></i></a>'+
+                                       `<a href="/penilaian/${oData.id}/edit" class="btn btn-info"><i class="fas fa-edit"></i></a>`+
+                                       '<form method="post" action="penilaian/'+oData.id+'">'+
+                                       `<input type="hidden" name="_token" value="{{ csrf_token() }}">`+
+                                       `<input type="hidden" name="_method" value="delete">`+
+                                       `<input type="hidden" name="pertamaId" value="2">`+
+                                       `<input type="hidden" name="keduaId" value="3">`+
+                                       `<input type="hidden" name="ketigaId" value="4">`+
+                                       `<input type="hidden" name="status" value="status_kepbag">`+
+                                       `<button type="submit" class="btn btn-danger hapuss"><span class="fas fa-trash"></span></button>`+
+                                       '</form>'+
+                                       '</div>';
+                            }
+                        }else if(oData.status.status_admin == 0){
+                            if(tglData < tglNow){
+                                return '<a href="/penilaian/'+oData.id+'/nilai/'+$('#filterBulan').val()+'" class="btn btn-warning" >History</a>';
+                            }else if(tglData == tglNow){
+                                return '<div class="btn-group" role="group">'+
+                                       '<a href="/penilaian/'+oData.id+'/nilai/'+$('#filterBulan').val()+'" class="btn btn-success" title="Lihat Nilai"><i class="fas fa-eye"></i></a>'+
+                                       `<a href="/penilaian/${oData.id}/edit" class="btn bg-navy"><i class="fas fa-edit"></i></a>`+
+                                       '<form method="post" action="penilaian/'+oData.id+'">'+
+                                       `<input type="hidden" name="_token" value="{{ csrf_token() }}">`+
+                                       `<input type="hidden" name="_method" value="delete">`+
+                                       `<input type="hidden" name="pertamaId" value="2">`+
+                                       `<input type="hidden" name="keduaId" value="3">`+
+                                       `<input type="hidden" name="ketigaId" value="4">`+
+                                       `<input type="hidden" name="status" value="status_kepbag">`+
+                                       `<button type="submit" class="btn btn-danger hapuss"><i class="fas fa-trash"></i></button>`+
+                                       '</form>'+
+                                       '</div>';
+                            }
                         }
                     },
                     orderable: true, 
@@ -1182,6 +1482,7 @@ $('#filterBulan option').map(function(n){
             table.draw();
             $('.bulan').text($(this).children("option").filter(":selected").text());
         });
+        $('#infoKarya tbody').on('click', '.hapuss', function(){return confirm('Yakin Ingin Menghapus?') ? true : false;});
     });
 
     setTimeout(function() {
@@ -1224,7 +1525,7 @@ $('#filterBulan option').map(function(n){
                 }},
                 {data: 'departemen', name: 'departemen'},   
                 {data: 'berakhir_kontrak', name: 'berakhir_kontrak'},
-                {data: 'status_kepbag', name: 'status_kepbag', 
+                {data: 'status.status_kepbag', name: 'status_kepbag', 
                     "render" : function (nTd, sData, oData, iRow, iCol) {
                         const nowDate = new Date().toJSON().slice(0,10);
                         const diffDates = (startDate, endDate) => {
@@ -1239,10 +1540,10 @@ $('#filterBulan option').map(function(n){
 
                             return dayCount
                         }
-                        if(oData.status_kepbag == 0){
+                        if(oData.status.status_kepbag == 0){
                             if(diffDates(nowDate, oData.berakhir_kontrak) <= 14) return `<span class="badge badge-pill badge-danger">Overdue!</span><span class="badge badge-pill badge-warning">${diffDates(nowDate, oData.berakhir_kontrak)} Hari Lagi!</span>`
                             return `<span class="badge badge-pill badge-warning">Belum Nilai!</span><span class="badge badge-pill badge-info">${diffDates(nowDate, oData.berakhir_kontrak)} Hari Lagi</span>`
-                        }else if(oData.status_kepbag == 1){
+                        }else if(oData.status.status_kepbag == 1){
                             return `<span class="badge badge-pill badge-success">Sudah Dinilai</span>`
                         }
                 }},
@@ -1250,12 +1551,46 @@ $('#filterBulan option').map(function(n){
                     data: 'action', 
                     name: 'action', 
                     "render" : function (nTd, sData, oData, iRow, iCol){
-                        if(oData.status_kepbag == 0) {
+                        const tglData = JSON.stringify(oData.data.map(e=>e.created_at)).slice(8,9);
+                        const tglNow = tgl.toJSON().slice(6,7);
+                        if(oData.status.status_kepbag == 0) {
                             return "<a href='/penilaian/"+oData.id+"/input' class='btn btn-info'>Nilai</a>";
-                        }else if(oData.status_admin == 1){
-                            return '<a href="/penilaian/'+oData.id+'/nilai/'+$('#filterBulan').val()+'" class="btn btn-warning">History</a>';
-                        }else if(oData.status_admin == 0){
-                            return '<a href="javascript:void(0)" class="btn btn-warning" disabled>History</a>';
+                        }else if(oData.status.status_admin == 1){
+                            if(tglData < tglNow){
+                                return '<a href="/penilaian/'+oData.id+'/nilai/'+$('#filterBulan').val()+'" class="btn btn-warning" >History</a>';
+                            }else if(tglData == tglNow){
+                                return '<div class="btn-group" role="group">'+
+                                       '<a href="/penilaian/'+oData.id+'/nilai/'+$('#filterBulan').val()+'" class="btn btn-success" title="Lihat Nilai"><i class="fas fa-eye"></i></a>'+
+                                       `<a href="/penilaian/${oData.id}/edit" class="btn btn-info"><i class="fas fa-edit"></i></a>`+
+                                       '<form method="post" action="penilaian/'+oData.id+'">'+
+                                       `<input type="hidden" name="_token" value="{{ csrf_token() }}">`+
+                                       `<input type="hidden" name="_method" value="delete">`+
+                                       `<input type="hidden" name="pertamaId" value="2">`+
+                                       `<input type="hidden" name="keduaId" value="3">`+
+                                       `<input type="hidden" name="ketigaId" value="4">`+
+                                       `<input type="hidden" name="status" value="status_kepbag">`+
+                                       `<button type="submit" class="btn btn-danger hapuss"><span class="fas fa-trash"></span></button>`+
+                                       '</form>'+
+                                       '</div>';
+                            }
+                        }else if(oData.status.status_admin == 0){
+                            if(tglData < tglNow){
+                                return '<a href="/penilaian/'+oData.id+'/nilai/'+$('#filterBulan').val()+'" class="btn btn-warning" >History</a>';
+                            }else if(tglData == tglNow){
+                                return '<div class="btn-group" role="group">'+
+                                       '<a href="/penilaian/'+oData.id+'/nilai/'+$('#filterBulan').val()+'" class="btn btn-success" title="Lihat Nilai"><i class="fas fa-eye"></i></a>'+
+                                       `<a href="/penilaian/${oData.id}/edit" class="btn bg-navy"><i class="fas fa-edit"></i></a>`+
+                                       '<form method="post" action="penilaian/'+oData.id+'">'+
+                                       `<input type="hidden" name="_token" value="{{ csrf_token() }}">`+
+                                       `<input type="hidden" name="_method" value="delete">`+
+                                       `<input type="hidden" name="pertamaId" value="2">`+
+                                       `<input type="hidden" name="keduaId" value="3">`+
+                                       `<input type="hidden" name="ketigaId" value="4">`+
+                                       `<input type="hidden" name="status" value="status_kepbag">`+
+                                       `<button type="submit" class="btn btn-danger hapuss"><i class="fas fa-trash"></i></button>`+
+                                       '</form>'+
+                                       '</div>';
+                            }
                         }
                     },
                     orderable: true, 
@@ -1269,6 +1604,7 @@ $('#filterBulan option').map(function(n){
             table.draw();
             $('.bulan').text($(this).children("option").filter(":selected").text());
         });
+        $('#infoKarya tbody').on('click', '.hapuss', function(){return confirm('Yakin Ingin Menghapus?') ? true : false;});
     });
 
     setTimeout(function() {

@@ -2325,14 +2325,18 @@ var rekomendasiChart = new Chart(rekomendasiChartCanvas, {
                     }
                 }},
             ],
-            // dom: 'Blfrtip',
-            // dom: '<"html5buttons">lBfrtip',
+            lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
             dom: "<'row'<'col-sm-2'l><'col-sm-7 text-center'B><'col-sm-3'f>>"+"<'row'<'col-sm-12'tr>>"+"<'row'<'col-sm-5'i><'col-sm-7'p>>",
             buttons: [
                 {
                     extend: 'collection', 
                     text: 'Print', 
                     buttons: [
+                        {
+                            extend: 'print', 
+                            text: 'Print All',
+                            title: 'Hasil Penilaian Semua Karyawan',
+                        },
                         {
                             extend: 'print', 
                             text: 'Perpanjang',
@@ -2352,6 +2356,11 @@ var rekomendasiChart = new Chart(rekomendasiChartCanvas, {
                     text: 'CSV', 
                     buttons: [
                         {
+                            extend: 'print', 
+                            text: 'Print All',
+                            title: 'Hasil Penilaian Semua Karyawan',
+                        },
+                        {
                             extend: 'csv', 
                             text: 'Perpanjang',
                             title: 'Karyawan Yang Direkomendasi Perpanjang Kontrak',
@@ -2370,6 +2379,11 @@ var rekomendasiChart = new Chart(rekomendasiChartCanvas, {
                     text: 'Excel', 
                     buttons: [
                         {
+                            extend: 'print', 
+                            text: 'Print All',
+                            title: 'Hasil Penilaian Semua Karyawan',
+                        },
+                        {
                             extend: 'excel', 
                             text: 'Perpanjang',
                             title: 'Karyawan Yang Direkomendasi Perpanjang Kontrak',
@@ -2387,6 +2401,11 @@ var rekomendasiChart = new Chart(rekomendasiChartCanvas, {
                     extend: 'collection', 
                     text: 'PDF', 
                     buttons: [
+                        {
+                            extend: 'print', 
+                            text: 'Print All',
+                            title: 'Hasil Penilaian Semua Karyawan',
+                        },
                         {
                             extend: 'pdf', 
                             text: 'Perpanjang',
